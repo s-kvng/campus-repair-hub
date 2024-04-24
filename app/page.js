@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Button } from "@nextui-org/button";
 
 export default function Home() {
   return (
@@ -22,6 +22,13 @@ export default function Home() {
                 setting up and implementing authentication functionality,
                 ensuring the highest level of security for your users.
               </p>
+              <Button
+                radius="full"
+                className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
+                variant="shadow"
+              >
+                Click me
+              </Button>
             </div>
           </div>
         </div>
