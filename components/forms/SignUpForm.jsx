@@ -34,8 +34,8 @@ const SignUpForm = () => {
 
   const onSubmit = (data) => console.log(data);
   return (
-    <div className="flex items-center justify-center w-full z-10 bg-red-500 h-screen">
-      <div className={`mx-auto w-full max-w-lg bg-black rounded-xl p-10`}>
+    <div className="flex items-center justify-center w-full z-10 py-8 px-4 sm:px-0">
+      <div className={`mx-auto w-full max-w-lg bg-black rounded-xl p-10 `}>
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[60px]">
             <img src="/favicon.ico" alt="Logo" />
@@ -44,13 +44,22 @@ const SignUpForm = () => {
         <h2 className="text-center text-2xl font-bold leading-tight text-white">
           Sign Up to your account
         </h2>
-        <p className="mt-2 text-center text-base text-gray-600 mb-6">
+        <p className="mt-2 text-center text-base text-gray-600 mb-2">
           Already have an account?&nbsp;
           <Link
             href="/login"
             className="font-medium text-primary transition-all duration-200 hover:underline"
           >
             Login
+          </Link>
+        </p>
+        <p className="mt-2 text-center text-base text-gray-600 mb-6">
+          Become a&nbsp;
+          <Link
+            href="provider/login"
+            className="font-medium text-primary transition-all duration-200 hover:underline"
+          >
+            Provider
           </Link>
         </p>
 
@@ -129,7 +138,7 @@ const SignUpForm = () => {
               // onClick={onSubmit}
             >
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-              Sign in
+              Sign Up
             </Button>
           </div>
 
