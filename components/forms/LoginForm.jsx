@@ -13,7 +13,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
 
-const LoginForm = () => {
+const LoginForm = ({ className }) => {
   const { register, handleSubmit } = useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
@@ -35,7 +35,7 @@ const LoginForm = () => {
   const onSubmit = (data) => console.log(data);
   return (
     <div className="flex items-center justify-center w-full z-10">
-      <div className={`mx-auto w-full max-w-lg bg-gray-200/60 rounded-xl p-10`}>
+      <div className={`mx-auto w-full max-w-lg  rounded-xl p-10 ${className}`}>
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[60px]">
             <img src="/favicon.ico" alt="Logo" />

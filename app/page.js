@@ -41,7 +41,7 @@ export default function Home() {
                 ) : (
                     <Login />
                 )} */}
-          <LoginForm />
+          <LoginForm className="bg-gray-200/60" />
         </div>
       </div>
     </main>

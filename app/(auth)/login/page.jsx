@@ -1,7 +1,13 @@
 import React from "react";
 
+import LoginForm from "@/components/forms/LoginForm";
+
 const LoginPage = () => {
-  return <div>LoginPage</div>;
+  return (
+    <div className=" h-screen pt-6">
+      <LoginForm className="bg-black" />
+    </div>
+  );
 };
 
 export default LoginPage;
