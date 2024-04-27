@@ -35,7 +35,9 @@ const LoginForm = ({ className }) => {
   const onSubmit = (data) => console.log(data);
   return (
     <div className="flex items-center justify-center w-full z-10">
-      <div className={`mx-auto w-full max-w-lg  rounded-xl p-10 ${className}`}>
+      <div
+        className={`mx-auto w-full max-w-lg  rounded-xl py-10 px-5 sm:p-10  ${className}`}
+      >
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[60px]">
             <img src="/favicon.ico" alt="Logo" />
