@@ -14,7 +14,11 @@ import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
 
 const SignUpForm = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
 
@@ -58,7 +62,7 @@ const SignUpForm = () => {
         <p className="mt-2 text-center text-base text-gray-600 mb-6">
           Become a&nbsp;
           <Link
-            href="provider/login"
+            href="servicer/sign-up"
             className="font-medium text-primary transition-all duration-200 hover:underline"
           >
             Provider
@@ -76,6 +80,11 @@ const SignUpForm = () => {
                 isClearable
                 {...register("firstname", { required: true })}
               />
+              {errors.firstname && (
+                <span className=" text-red-500">
+                  First name field is required
+                </span>
+              )}
             </div>
             <div>
               <Input
@@ -86,6 +95,11 @@ const SignUpForm = () => {
                 isClearable
                 {...register("lastname", { required: true })}
               />
+              {errors.lastname && (
+                <span className=" text-red-500">
+                  Last name field is required
+                </span>
+              )}
             </div>
             <div>
               <Input
@@ -96,6 +110,9 @@ const SignUpForm = () => {
                 isClearable
                 {...register("email", { required: true })}
               />
+              {errors.email && (
+                <span className=" text-red-500">Email field is required</span>
+              )}
             </div>
             <div>
               <Input

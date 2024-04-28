@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "./providers";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,10 +15,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="main">
-            <div className=" gradient"></div>
-          </div>
-          {children}
+          <AntdRegistry>
+            <div className="main">
+              <div className=" gradient"></div>
+            </div>
+            {children}
+          </AntdRegistry>
         </Providers>
       </body>
     </html>
