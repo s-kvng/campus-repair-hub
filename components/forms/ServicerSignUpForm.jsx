@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import SignupContent1 from "./SignupContent1";
 import SignupContent2 from "./SignupContent2";
+import SignupContent3 from "./SignupContent3";
 
 const ServicerSignUpForm = () => {
   const {
@@ -21,7 +22,7 @@ const ServicerSignUpForm = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [charge, setCharge] = useState(1);
 
@@ -49,7 +50,7 @@ const ServicerSignUpForm = () => {
           return true;
         }
       } else if (current === 1) {
-        if (phone === "" || charge === "") {
+        if (phone === "" || charge === "" || address === "") {
           return true;
         }
       }
@@ -58,7 +59,7 @@ const ServicerSignUpForm = () => {
     };
 
     setIsDisabled(isDisabled(current));
-  }, [firstName, lastName, email, password, current, phone, charge]);
+  }, [firstName, lastName, email, password, current, phone, charge, address]);
 
   const steps = [
     {
@@ -88,12 +89,14 @@ const ServicerSignUpForm = () => {
           setPhone={setPhone}
           charge={charge}
           setCharge={setCharge}
+          address={address}
+          setAddress={setAddress}
         />
       ),
     },
     {
       title: "Last",
-      content: "Last-content",
+      content: <SignupContent3 register={register} />,
     },
   ];
 

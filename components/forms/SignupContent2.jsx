@@ -12,10 +12,9 @@ const SignupContent2 = ({
   setPhone,
   charge,
   setCharge,
+  address,
+  setAddress,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [value, setValue] = useState("");
-
   return (
     <div>
       <div className=" space-y-5">
@@ -64,6 +63,21 @@ const SignupContent2 = ({
             <span className=" text-red-500">
               Service charge field is required
             </span>
+          )}
+        </div>
+        <div>
+          <Input
+            isRequired
+            value={address}
+            onValueChange={setAddress}
+            type="text"
+            variant="bordered"
+            size="sm"
+            label="Address"
+            {...register("address", { required: true })}
+          />
+          {errors.contact && (
+            <span className=" text-red-500">Address field is required</span>
           )}
         </div>
         {/* <div>
