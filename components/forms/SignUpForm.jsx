@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 
@@ -12,8 +13,12 @@ import { Button } from "../ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
+import useAuth from "@/context/useAuth";
+import appwriteService from "@/appwrite/config";
 
 const SignUpForm = () => {
+  const router = useRouter();
+  const { setAuthStatus } = useAuth();
   const {
     register,
     handleSubmit,
@@ -36,7 +41,24 @@ const SignUpForm = () => {
   // toggle show password
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const { firstname, lastname, email, password } = data;
+
+    console.log(
+      `First Name: ${firstname}, Last Name: ${lastname}, Email: ${email} and Password: ${password}`
+    );
+    //   try {
+    //     const userData = await appwriteService.createUserAccount({email, password, name})
+    //     if(userData){
+    //         setAuthStatus(true)
+    //         setIsLoading(false)
+    //         router.push("/profile")
+    //     }
+    // } catch (error) {
+    //     setError(error.message)
+    //     setIsLoading(false)
+    // }
+  };
   return (
     <div className="flex items-center justify-center w-full z-10 py-8 px-4 sm:px-0">
       <div
