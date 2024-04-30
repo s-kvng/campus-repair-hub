@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
-import "../styles/globals.css";
-import { Providers } from "./providers";
+import "@/styles/globals.css";
+import { Providers } from "../providers";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const inter = Inter({ subsets: ["latin"] });
