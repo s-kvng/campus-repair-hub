@@ -2,20 +2,26 @@ import React, { useState } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 import { animals, availability, categories } from "@/constants/data";
 
-const SignupContent3 = ({ register }) => {
+const SignupContent3 = ({
+  register,
+  categoriesValue,
+  setCategories,
+  availabilityValue,
+  setAvailability,
+}) => {
   const [values, setValues] = useState(new Set([]));
 
   return (
     <div>
       <div className="flex w-full  flex-col gap-2 mb-3">
         <Select
+          selectedKeys={categoriesValue}
           label="Service Category"
           selectionMode="multiple"
           variant="bordered"
           size="sm"
-          selectedKeys={values}
           className="max-w-full"
-          onSelectionChange={setValues}
+          onSelectionChange={setCategories}
           {...register("categories", { required: true })}
         >
           {categories.map((category) => (
@@ -31,6 +37,8 @@ const SignupContent3 = ({ register }) => {
 
       <div>
         <Select
+          selectedKeys={availabilityValue}
+          onSelectionChange={setAvailability}
           variant="bordered"
           label="Select Availability"
           size="sm"

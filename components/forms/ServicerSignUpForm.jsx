@@ -25,6 +25,8 @@ const ServicerSignUpForm = () => {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [charge, setCharge] = useState(1);
+  const [categories, setCategories] = useState("");
+  const [availability, setAvailability] = useState("");
 
   const onSubmit = (data) => {
     console.log(data);
@@ -38,6 +40,7 @@ const ServicerSignUpForm = () => {
   // disable next button
   useMemo(() => {
     const isDisabled = (current) => {
+      console.log(categories);
       if (current === 0) {
         if (
           firstName === "" ||
@@ -53,17 +56,32 @@ const ServicerSignUpForm = () => {
         if (phone === "" || charge === "" || address === "") {
           return true;
         }
+      } else if (current === 2) {
+        if (categories === "" || availability === "") {
+          return true;
+        }
       }
 
       return false;
     };
 
     setIsDisabled(isDisabled(current));
-  }, [firstName, lastName, email, password, current, phone, charge, address]);
+  }, [
+    firstName,
+    lastName,
+    email,
+    password,
+    current,
+    phone,
+    charge,
+    address,
+    categories,
+    availability,
+  ]);
 
   const steps = [
     {
-      title: "First",
+      title: "Auth Information",
       content: (
         <SignupContent1
           register={register}
@@ -80,7 +98,7 @@ const ServicerSignUpForm = () => {
       ),
     },
     {
-      title: "Second",
+      title: "Personal Info",
       content: (
         <SignupContent2
           register={register}
@@ -95,8 +113,16 @@ const ServicerSignUpForm = () => {
       ),
     },
     {
-      title: "Last",
-      content: <SignupContent3 register={register} />,
+      title: "Work Info",
+      content: (
+        <SignupContent3
+          register={register}
+          categoriesValue={categories}
+          setCategories={setCategories}
+          availabilityValue={availability}
+          setAvailability={setAvailability}
+        />
+      ),
     },
   ];
 
@@ -161,7 +187,7 @@ const ServicerSignUpForm = () => {
         )}
 
         {current === steps.length - 1 && (
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" disabled={isDisabled}>
             Done
           </Button>
         )}
