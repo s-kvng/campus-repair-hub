@@ -13,8 +13,12 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
 
-const LoginForm = ({ className }) => {
-  const { register, handleSubmit } = useForm();
+const SignUpForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
 
@@ -34,38 +38,81 @@ const LoginForm = ({ className }) => {
 
   const onSubmit = (data) => console.log(data);
   return (
-    <div className="flex items-center justify-center w-full z-10">
+    <div className="flex items-center justify-center w-full z-10 py-8 px-4 sm:px-0">
       <div
-        className={`mx-auto w-full max-w-lg  rounded-xl py-10 px-5 sm:p-10  ${className}`}
+        className={`mx-auto w-full max-w-lg bg-black rounded-xl py-10 px-4 sm:p-10 `}
       >
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[60px]">
             <img src="/favicon.ico" alt="Logo" />
           </span>
         </div>
-        <h2 className="text-center text-2xl font-bold leading-tight text-black">
-          Sign in to your account
+        <h2 className="text-center text-2xl font-bold leading-tight text-white">
+          Sign Up to your account
         </h2>
-        <p className="mt-2 text-center text-base text-gray-600 mb-6">
-          Don&apos;t have any account?&nbsp;
+        <p className="mt-2 text-center text-base text-gray-600 mb-2">
+          Already have an account?&nbsp;
           <Link
-            href="/signup"
+            href="/login"
             className="font-medium text-primary transition-all duration-200 hover:underline"
           >
-            Sign Up
+            Login
+          </Link>
+        </p>
+        <p className="mt-2 text-center text-base text-gray-600 mb-6">
+          Become a&nbsp;
+          <Link
+            href="servicer/sign-up"
+            className="font-medium text-primary transition-all duration-200 hover:underline"
+          >
+            Provider
           </Link>
         </p>
 
         <form className=" z-20" onSubmit={handleSubmit(onSubmit)}>
-          <div className=" space-y-8">
+          <div className=" space-y-5">
+            <div>
+              <Input
+                type="text"
+                variant="bordered"
+                size="sm"
+                label="First Name"
+                isClearable
+                {...register("firstname", { required: true })}
+              />
+              {errors.firstname && (
+                <span className=" text-red-500">
+                  First name field is required
+                </span>
+              )}
+            </div>
+            <div>
+              <Input
+                type="text"
+                variant="bordered"
+                size="sm"
+                label="Last Name"
+                isClearable
+                {...register("lastname", { required: true })}
+              />
+              {errors.lastname && (
+                <span className=" text-red-500">
+                  Last name field is required
+                </span>
+              )}
+            </div>
             <div>
               <Input
                 type="email"
                 variant="bordered"
+                size="sm"
                 label="Email"
                 isClearable
                 {...register("email", { required: true })}
               />
+              {errors.email && (
+                <span className=" text-red-500">Email field is required</span>
+              )}
             </div>
             <div>
               <Input
@@ -73,6 +120,7 @@ const LoginForm = ({ className }) => {
                 label="Password"
                 // color="default"
                 variant="bordered"
+                size="sm"
                 onInvalid={isInvalid}
                 onValueChange={setValue}
                 color={isInvalid}
@@ -109,7 +157,7 @@ const LoginForm = ({ className }) => {
               // onClick={onSubmit}
             >
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-              Sign in
+              Sign Up
             </Button>
           </div>
 
@@ -132,4 +180,4 @@ const LoginForm = ({ className }) => {
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

@@ -68,3 +68,9 @@
     padding: 0;
   }
 }
+
+@media screen and (max-width: 1028px) {
+  .main::before {
+    background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #443d3d 100%);
+  }
+}
