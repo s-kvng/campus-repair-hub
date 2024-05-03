@@ -3,21 +3,29 @@
 import React, { useState, useMemo } from "react";
 import { Button, message, Steps, theme } from "antd";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 import SignupContent1 from "./SignupContent1";
 import SignupContent2 from "./SignupContent2";
 import SignupContent3 from "./SignupContent3";
+import appwriteService from "@/appwrite/config";
+import useAuth from "@/context/useAuth";
+import { CircularProgress } from "@nextui-org/react";
 
 const ServicerSignUpForm = () => {
+  const router = useRouter();
+  const { setAuthStatus } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,9 +36,50 @@ const ServicerSignUpForm = () => {
   const [categories, setCategories] = useState("");
   const [availability, setAvailability] = useState("");
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setIsLoading(true);
     console.log(data);
-    message.success("Submitted successfully");
+    const {
+      firstname,
+      lastname,
+      email,
+      password,
+      bio,
+      contact,
+      charge,
+      address,
+      availability,
+      categories,
+    } = data;
+    const username = `${firstname} ${lastname}`;
+    const phone = Number(contact);
+    console.log(typeof phone);
+
+    try {
+      const newServicerAccount = await appwriteService.createServiceUser(
+        email,
+        password,
+        username,
+        firstname,
+        lastname,
+        phone,
+        address,
+        bio,
+        availability,
+        categories
+      );
+
+      if (newServicerAccount) {
+        setAuthStatus(true);
+        message.success(`Your account has been created, Mr. ${firstname}`);
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      setError(error.message);
+      message.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   //
@@ -40,7 +89,6 @@ const ServicerSignUpForm = () => {
   // disable next button
   useMemo(() => {
     const isDisabled = (current) => {
-      console.log(categories);
       if (current === 0) {
         if (
           firstName === "" ||
@@ -79,6 +127,7 @@ const ServicerSignUpForm = () => {
     availability,
   ]);
 
+  //
   const steps = [
     {
       title: "Auth Information",
@@ -156,10 +205,10 @@ const ServicerSignUpForm = () => {
   };
 
   //
-
   const prev = () => {
     setCurrent(current - 1);
   };
+
   const items = steps.map((item) => ({
     key: item.title,
     title: item.title,
@@ -174,7 +223,19 @@ const ServicerSignUpForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Steps current={current} items={items} />
-      <div style={contentStyle}>{steps[current].content}</div>
+      {isLoading ? (
+        <div className=" z-20 w-full">
+          <div className="flex items-center justify-center">
+            <CircularProgress
+              size="lg"
+              color="primary"
+              aria-label="loading..."
+            />
+          </div>
+        </div>
+      ) : (
+        <div style={contentStyle}>{steps[current].content}</div>
+      )}
       <div
         style={{
           marginTop: 24,
@@ -187,7 +248,11 @@ const ServicerSignUpForm = () => {
         )}
 
         {current === steps.length - 1 && (
-          <Button type="primary" htmlType="submit" disabled={isDisabled}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={isDisabled || isLoading}
+          >
             Done
           </Button>
         )}
