@@ -148,7 +148,7 @@ const LoginForm = ({ className }) => {
                   className="w-full"
                   // onClick={onSubmit}
                 >
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
                   Sign in
                 </Button>
               </div>
