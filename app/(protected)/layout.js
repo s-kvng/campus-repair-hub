@@ -15,10 +15,7 @@ export default function ProtectedLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <AntdRegistry>
-            <div>Navbar</div>
-            {children}
-          </AntdRegistry>
+          <AntdRegistry>{children}</AntdRegistry>
         </Providers>
       </body>
     </html>
