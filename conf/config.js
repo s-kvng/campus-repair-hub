@@ -5,6 +5,12 @@ const conf = {
   serviceUsersCollectionId: String(
     process.env.NEXT_PUBLIC_APPWRITE_SERVICE_USERS_COLLECTION_ID
   ),
+  normalUsersCollectionId: String(
+    process.env.NEXT_PUBLIC_APPWRITE_NORMAL_USERS_COLLECTION_ID
+  ),
+  serviceRequestsCollectionId: String(
+    process.env.NEXT_PUBLIC_APPWRITE_SERVICE_REQUESTS_COLLECTION_ID
+  ),
 };
 
 export default conf;

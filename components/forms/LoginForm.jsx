@@ -19,7 +19,6 @@ import { message } from "antd";
 
 const LoginForm = ({ className }) => {
   const router = useRouter();
-  const { setAuthStatus } = useAuth();
   const { register, handleSubmit } = useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");

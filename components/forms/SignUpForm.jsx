@@ -16,10 +16,11 @@ import useAuth from "@/context/useAuth";
 import appwriteService from "@/appwrite/config";
 import { message } from "antd";
 import { CircularProgress } from "@nextui-org/react";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignUpForm = () => {
   const router = useRouter();
-  const { setAuthStatus } = useAuth();
+  const { user, checkAuthUser } = useUserContext();
   const {
     register,
     handleSubmit,
@@ -47,23 +48,45 @@ const SignUpForm = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     const { firstname, lastname, email, password } = data;
+    console.log(data);
     const name = `${firstname} ${lastname}`;
 
     try {
-      const userData = await appwriteService.createUserAccount({
-        email,
-        password,
-        name,
+      const userData = await appwriteService.createNormalUser({
+        email: email,
+        password: password,
+        name: name,
+        firstname: firstname,
+        lastname: lastname,
       });
-      if (userData) {
-        setAuthStatus(true);
-        setIsLoading(false);
+
+      console.log("user created->", userData);
+      if (!userData) {
+        message.error(`Ooops!! something went wrong`);
+        return;
+      }
+
+      const session = await appwriteService.login(email, password);
+
+      console.log("session->", session);
+      if (!session) {
+        message.error(`Ooops!! something went wrong`);
+        return;
+      }
+
+      const isLoggedIn = await checkAuthUser();
+      if (isLoggedIn) {
         message.success(`Your account has been created, Mr. ${firstname}`);
-        router.push("/profile");
+        router.replace("/feed");
+      } else {
+        message.error(`🫢Ooops Signup Failed, Please Try Again`);
+        return;
       }
     } catch (error) {
       setError(error.message);
+      console.log(error);
       message.error("Something went wrong");
+    } finally {
       setIsLoading(false);
     }
   };

@@ -1,5 +1,6 @@
+import { avatar } from "@nextui-org/react";
 import conf from "../conf/config";
-import { Client, Account, ID, Avatars, Databases } from "appwrite";
+import { Client, Account, ID, Avatars, Databases, Query } from "appwrite";
 
 const appwriteClient = new Client();
 
@@ -19,11 +20,40 @@ export class AppwriteService {
         password,
         name
       );
-      if (userAccount) {
-        return this.login({ email, password });
-      } else {
-        return userAccount;
-      }
+
+      return userAccount;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  //
+  async createNormalUser({ email, password, name, firstname, lastname }) {
+    try {
+      const userAuthAccount = await this.createUserAccount({
+        email: email,
+        password: password,
+        name: name,
+      });
+
+      if (!userAuthAccount) throw Error;
+
+      const avatarUrl = avatars.getInitials(name);
+      console.log(firstname, avatarUrl, lastname, email);
+      const newNormalUser = await databases.createDocument(
+        conf.databaseId,
+        conf.normalUsersCollectionId,
+        ID.unique(),
+        {
+          email: email,
+          accountId: userAuthAccount.$id,
+          avatar: avatarUrl,
+          firstname: firstname,
+          lastname: lastname,
+        }
+      );
+
+      return newNormalUser;
     } catch (error) {
       throw new Error(error);
     }
@@ -79,11 +109,12 @@ export class AppwriteService {
     }
   }
 
-  async login({ email, password }) {
+  async login(email, password) {
     // login the user on appwrite
     try {
       return await account.createEmailPasswordSession(email, password);
     } catch (error) {
+      console.log("Session error: " + error);
       throw new Error(error);
     }
   }
@@ -98,7 +129,19 @@ export class AppwriteService {
 
   async getCurrentUser() {
     try {
-      return account.get();
+      const currentAccount = await account.get();
+
+      if (!currentAccount) throw Error;
+
+      const currentUser = await databases.listDocuments(
+        conf.databaseId,
+        conf.normalUsersCollectionId,
+        [Query.equal("accountId", currentAccount.$id)]
+      );
+
+      console.log("current user: " + currentUser.documents);
+      if (!currentUser) throw Error;
+      return currentUser.documents[0];
     } catch (error) {
       console.log("getCurrentUser error -> ", error);
     }
