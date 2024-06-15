@@ -9,7 +9,7 @@
 @layer utilities {
   /* Left sidebar */
   .leftsidebar {
-    @apply hidden md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-black/90;
+    @apply hidden md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-black/90 min-h-screen max-h-screen;
   }
 }
 

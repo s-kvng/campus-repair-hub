@@ -21,7 +21,7 @@ const Dashboard = () => {
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
   return (
-    <div className="flex flex-col flex-1 min-h-screen">
+    <div className="flex flex-col flex-1 min-h-screen overflow-scroll">
       <div className="bg-blue-400 px-4 py-2 h-[30vh] overflow-hidden">
         <div className="flex justify-end">
           <div className="flex items-center gap-x-3">
