@@ -4,6 +4,7 @@ import React from "react";
 import { Tabs, Tab, Card, CardBody, CardHeader } from "@nextui-org/react";
 import IncomingRequestTab from "@/components/shared/IncomingRequestTab";
 import ClaimedRequestTab from "@/components/shared/ClaimedRequestTab";
+import CompletedRequestTab from "@/components/shared/CompletedRequestTab";
 
 const ManageRequests = () => {
   let tabs = [
@@ -20,8 +21,7 @@ const ManageRequests = () => {
     {
       id: "completed-requests",
       label: "Completed Requests",
-      content:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content: <CompletedRequestTab />,
     },
   ];
 
