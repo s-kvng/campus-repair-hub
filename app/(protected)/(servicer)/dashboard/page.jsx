@@ -1,89 +1,145 @@
-import React from "react";
-import Head from "next/head";
+"use client";
 
+import React, { useState } from "react";
+import { Accordion, AccordionItem } from "@nextui-org/react";
+import {
+  EnvironmentTwoTone,
+  PhoneTwoTone,
+  UserOutlined,
+  TagsTwoTone,
+  StarTwoTone,
+  FundTwoTone,
+} from "@ant-design/icons";
+import { Col, Row, Rate, Avatar, Badge, Card, Skeleton } from "antd";
+import { Divider } from "@nextui-org/react";
+
+const { Meta } = Card;
 const Dashboard = () => {
+  const [loading, setLoading] = useState(false);
+
+  const defaultContent =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+
   return (
-    <div className="flex flex-1 min-h-screen">
-      <Head>
-        <title>Repairer Dashboard</title>
-      </Head>
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">Repairer Dashboard</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Manage Requests Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-4">Manage Requests</h2>
-            <ul className="space-y-4">
-              {/* Example request items */}
-              <li className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                <div className="flex justify-between">
-                  <span>Request #1</span>
-                  <button className="text-blue-500">View Details</button>
-                </div>
-              </li>
-              <li className="p-4 bg-gray-50 rounded-lg shadow-sm">
-                <div className="flex justify-between">
-                  <span>Request #2</span>
-                  <button className="text-blue-500">View Details</button>
-                </div>
-              </li>
-              {/* Add more request items as needed */}
-            </ul>
+    <div className="flex flex-col flex-1 min-h-screen">
+      <div className="bg-blue-400 px-4 py-2 h-[30vh] overflow-hidden">
+        <div className="flex justify-end">
+          <div className="flex items-center gap-x-3">
+            <p>
+              <Badge dot offset={[-4, 5]}>
+                <Avatar shape="circle" size="large" icon={<UserOutlined />} />
+              </Badge>
+            </p>
+            <div className="flex flex-col">
+              <p>name</p>
+              <p>Available</p>
+            </div>
           </div>
-          {/* Update Profile Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-4">Update Profile</h2>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                  placeholder="John Doe"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Skills
-                </label>
-                <input
-                  type="text"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                  placeholder="Electrical, Plumbing"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Availability
-                </label>
-                <input
-                  type="text"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                  placeholder="Weekdays, 9am-5pm"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Rates
-                </label>
-                <input
-                  type="text"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                  placeholder="$20/hour"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white p-2 rounded-md shadow-sm"
-              >
-                Save
-              </button>
-            </form>
+        </div>
+        <div className="h-full flex justify-center items-center">
+          <p className="text-4xl font-semibold uppercase">Campus Repair Hub</p>
+        </div>
+      </div>
+      <p className="italic text-gray-600 text-center my-3">
+        "Treat all clients with utmost care"
+      </p>
+      <div className="p-5">
+        <div className="mb-10">
+          <p className="font-bold mb-2">Personal Info</p>
+          <Divider className="my-4" />
+          <Row gutter={16}>
+            <Col
+              xs={{
+                flex: "100%",
+              }}
+              sm={{ flex: "50%" }}
+            >
+              <Accordion variant="splitted">
+                <AccordionItem
+                  key="1"
+                  aria-label="Name"
+                  title="Name"
+                  indicator={<UserOutlined color="blue" />}
+                >
+                  {defaultContent}
+                </AccordionItem>
+                <AccordionItem
+                  key="2"
+                  aria-label="Contact"
+                  title="Contact"
+                  indicator={<PhoneTwoTone />}
+                >
+                  {defaultContent}
+                </AccordionItem>
+                <AccordionItem
+                  key="3"
+                  aria-label="Location"
+                  title="Location"
+                  indicator={<EnvironmentTwoTone />}
+                >
+                  {defaultContent}
+                </AccordionItem>
+              </Accordion>
+            </Col>
+            <Col
+              xs={{
+                flex: "100%",
+              }}
+              sm={{ flex: "50%" }}
+            >
+              <Accordion variant="splitted">
+                <AccordionItem
+                  key="4"
+                  aria-label="Expertise"
+                  title="Expertise"
+                  indicator={<TagsTwoTone />}
+                >
+                  {defaultContent}
+                </AccordionItem>
+                <AccordionItem
+                  key="5"
+                  aria-label="Reviews"
+                  title="Reviews"
+                  indicator={<FundTwoTone />}
+                >
+                  {defaultContent}
+                </AccordionItem>
+                <AccordionItem
+                  key="6"
+                  aria-label="Rate"
+                  title="Rate"
+                  indicator={<StarTwoTone />}
+                >
+                  <Rate allowHalf disabled defaultValue={2.5} />
+                </AccordionItem>
+              </Accordion>
+            </Col>
+          </Row>
+        </div>
+        <div className="mb-10">
+          <p className="font-bold">Reviews</p>
+          <Divider className="my-4" />
+
+          <div>
+            <Card
+              style={{
+                width: 300,
+                marginTop: 16,
+              }}
+              loading={loading}
+            >
+              <Meta
+                avatar={
+                  <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
+                }
+                title="Card title"
+                description="This is the description"
+              />
+            </Card>
           </div>
         </div>
       </div>
+      <div className="text-center text-slate-400">Powered by Pycode</div>
     </div>
   );
 };
