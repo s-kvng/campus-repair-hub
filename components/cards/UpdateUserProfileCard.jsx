@@ -11,27 +11,6 @@ import { EyeFilledIcon } from "../icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../icons/EyeSlashFilledIcon";
 
 const UpdateUserProfileCard = () => {
-  const onSubmit = async (data) => {
-    console.log(data);
-    // setIsLoading(true);
-    // const { email, password } = data;
-
-    // try {
-    //   const session = await appwriteService.login({ email, password });
-    //   if (session) {
-    //     setAuthStatus(true);
-    //     setIsLoading(false);
-    //     message.success(`You successfully logged in`);
-    //     router.push("/dashboard");
-    //   }
-    // } catch (error) {
-    //   setError(error.message);
-    //   console.log(error);
-    //   setIsLoading(false);
-    //   message.error("Something went wrong");
-    // }
-  };
-
   const {
     register,
     handleSubmit,
@@ -57,6 +36,27 @@ const UpdateUserProfileCard = () => {
 
   // toggle show password
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    // setIsLoading(true);
+    // const { email, password } = data;
+
+    // try {
+    //   const session = await appwriteService.login({ email, password });
+    //   if (session) {
+    //     setAuthStatus(true);
+    //     setIsLoading(false);
+    //     message.success(`You successfully logged in`);
+    //     router.push("/dashboard");
+    //   }
+    // } catch (error) {
+    //   setError(error.message);
+    //   console.log(error);
+    //   setIsLoading(false);
+    //   message.error("Something went wrong");
+    // }
+  };
 
   return (
     <>

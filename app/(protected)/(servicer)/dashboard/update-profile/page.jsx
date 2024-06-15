@@ -4,6 +4,7 @@ import React from "react";
 import { UserAddOutlined, EditFilled } from "@ant-design/icons";
 import { Tabs } from "antd";
 import UpdateUserProfileCard from "@/components/cards/UpdateUserProfileCard";
+import UpdateWorkProfileCard from "@/components/cards/UpdateWorkProfileCard";
 
 const UpdateProfile = () => {
   const items = [
@@ -16,7 +17,7 @@ const UpdateProfile = () => {
     {
       key: "2",
       label: "Update Work Profile",
-      children: "Content of Tab Pane 2",
+      children: <UpdateWorkProfileCard />,
       icon: <EditFilled />,
     },
   ];

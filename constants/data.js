@@ -25,8 +25,8 @@ export const animals = [
 
 export const categories = [
   {
-    label: "Elctrical appliance",
-    value: "elctrical appliance",
+    label: "Electrical appliance",
+    value: "electrical appliance",
   },
   {
     label: "I.T Devices",
