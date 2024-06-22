@@ -82,7 +82,6 @@ export class AppwriteService {
       if (!newAccount) throw Error;
 
       const avatarUrl = avatars.getInitials(username);
-      await this.login({ email, password });
 
       const newUser = await databases.createDocument(
         conf.databaseId,
@@ -136,6 +135,28 @@ export class AppwriteService {
       const currentUser = await databases.listDocuments(
         conf.databaseId,
         conf.normalUsersCollectionId,
+        [Query.equal("accountId", currentAccount.$id)]
+      );
+
+      console.log("current user: " + currentUser.documents);
+      if (!currentUser) throw Error;
+      return currentUser.documents[0];
+    } catch (error) {
+      console.log("getCurrentUser error -> ", error);
+    }
+    return null;
+  }
+
+  //
+  async getCurrentServiceUser() {
+    try {
+      const currentAccount = await account.get();
+
+      if (!currentAccount) throw Error;
+
+      const currentUser = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceUsersCollectionId,
         [Query.equal("accountId", currentAccount.$id)]
       );
 

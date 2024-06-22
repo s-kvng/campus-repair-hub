@@ -12,9 +12,12 @@ import {
 } from "@ant-design/icons";
 import { Col, Row, Rate, Avatar, Badge, Card, Skeleton } from "antd";
 import { Divider } from "@nextui-org/react";
+import { useUserContext } from "@/context/AuthContext";
 
 const { Meta } = Card;
 const Dashboard = () => {
+  const { user } = useUserContext();
+  console.log("user -> ", user);
   const [loading, setLoading] = useState(false);
 
   const defaultContent =
@@ -26,13 +29,13 @@ const Dashboard = () => {
         <div className="flex justify-end">
           <div className="flex items-center gap-x-3">
             <p>
-              <Badge dot offset={[-4, 5]}>
-                <Avatar shape="circle" size="large" icon={<UserOutlined />} />
+              <Badge dot={user.availability === "available"} offset={[-4, 5]}>
+                <Avatar shape="circle" size="large" src={user.avatarUrl} />
               </Badge>
             </p>
             <div className="flex flex-col">
-              <p>name</p>
-              <p>Available</p>
+              <p>{`${user.firstname} ${user.lastname}`}</p>
+              <p className="capitalize">{`${user.availability}`}</p>
             </div>
           </div>
         </div>
@@ -61,7 +64,7 @@ const Dashboard = () => {
                   title="Name"
                   indicator={<UserOutlined color="blue" />}
                 >
-                  {defaultContent}
+                  {`${user.firstname} ${user.lastname}`}
                 </AccordionItem>
                 <AccordionItem
                   key="2"
@@ -69,7 +72,7 @@ const Dashboard = () => {
                   title="Contact"
                   indicator={<PhoneTwoTone />}
                 >
-                  {defaultContent}
+                  {`0${user.phone}`}
                 </AccordionItem>
                 <AccordionItem
                   key="3"
@@ -77,7 +80,7 @@ const Dashboard = () => {
                   title="Location"
                   indicator={<EnvironmentTwoTone />}
                 >
-                  {defaultContent}
+                  {`${user.address}`}
                 </AccordionItem>
               </Accordion>
             </Col>
@@ -94,7 +97,7 @@ const Dashboard = () => {
                   title="Expertise"
                   indicator={<TagsTwoTone />}
                 >
-                  {defaultContent}
+                  {`${user.category}`}
                 </AccordionItem>
                 <AccordionItem
                   key="5"

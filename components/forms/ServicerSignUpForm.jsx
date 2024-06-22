@@ -9,12 +9,12 @@ import SignupContent1 from "./SignupContent1";
 import SignupContent2 from "./SignupContent2";
 import SignupContent3 from "./SignupContent3";
 import appwriteService from "@/appwrite/config";
-import useAuth from "@/context/useAuth";
 import { CircularProgress } from "@nextui-org/react";
+import { useUserContext } from "@/context/AuthContext";
 
 const ServicerSignUpForm = () => {
   const router = useRouter();
-  const { setAuthStatus } = useAuth();
+  const { user, checkAuthUser } = useUserContext();
   const {
     register,
     handleSubmit,
@@ -69,14 +69,27 @@ const ServicerSignUpForm = () => {
         categories
       );
 
-      if (newServicerAccount) {
-        setAuthStatus(true);
+      if (!newServicerAccount) throw new Error();
+
+      const session = await appwriteService.login(email, password);
+
+      console.log("session->", session);
+      if (!session) {
+        message.error(`Ooops!! something went wrong`);
+        return;
+      }
+
+      const repairer = "repairer";
+      const isLoggedIn = await checkAuthUser(repairer);
+      console.log(isLoggedIn);
+      if (isLoggedIn) {
         message.success(`Your account has been created, Mr. ${firstname}`);
         router.push("/dashboard");
       }
     } catch (error) {
       setError(error.message);
       message.error("Something went wrong");
+      return;
     } finally {
       setIsLoading(false);
     }

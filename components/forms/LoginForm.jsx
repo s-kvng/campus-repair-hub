@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import appwriteService from "@/appwrite/config";
-import useAuth from "@/context/useAuth";
 import { useRouter } from "next/navigation";
 
 import { EyeFilledIcon } from "../icons/EyeFilledIcon";

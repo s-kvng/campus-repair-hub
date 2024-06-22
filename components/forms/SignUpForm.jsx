@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
-import useAuth from "@/context/useAuth";
 import appwriteService from "@/appwrite/config";
 import { message } from "antd";
 import { CircularProgress } from "@nextui-org/react";
@@ -74,7 +73,7 @@ const SignUpForm = () => {
         return;
       }
 
-      const isLoggedIn = await checkAuthUser();
+      const isLoggedIn = await checkAuthUser("user");
       if (isLoggedIn) {
         message.success(`Your account has been created, Mr. ${firstname}`);
         router.replace("/feed");
