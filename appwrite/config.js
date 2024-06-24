@@ -187,8 +187,25 @@ export class AppwriteService {
         [Query.equal("repairer", [accountId]), Query.equal("pending", true)]
       );
 
-      console.log("current user: " + incomingRequest.documents);
+      console.log("incoming docs: " + incomingRequest.documents);
       return incomingRequest.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
+
+  async getClaimedRequests(accountId) {
+    console.log("id to claim->", accountId);
+    try {
+      const claimedRequest = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        [Query.equal("repairer", [accountId]), Query.equal("claimed", true)]
+      );
+
+      console.log("claimed ->: " + claimedRequest.documents);
+      return claimedRequest.documents;
     } catch (error) {
       console.log("request document error -> ", error);
     }

@@ -11,7 +11,6 @@ import {
 } from "@nextui-org/react";
 
 export default function ServiceRequestCard({ request }) {
-  console.log(request);
   return (
     <Card className="max-w-[400px]">
       <CardHeader className="flex gap-3">

@@ -107,7 +107,6 @@ export const AuthProvider = ({ children }) => {
     checkAuthUser();
   }, []);
 
-  console.log("value -> ", user);
   const value = {
     user: user,
     isLoading: isLoading,
