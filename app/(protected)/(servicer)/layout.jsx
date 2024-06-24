@@ -5,9 +5,7 @@ const ServicerLayout = ({ children }) => {
   return (
     <div className="w-full md:flex">
       <LeftSidebar />
-      <main className="flex flex-1 min-h-screen  overflow-scroll">
-        {children}
-      </main>
+      <main className="flex flex-1 min-h-screen">{children}</main>
     </div>
   );
 };

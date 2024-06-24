@@ -176,6 +176,24 @@ export class AppwriteService {
       console.log("logout error -> ", error);
     }
   }
+
+  /***** Requests  ******/
+  async getIncomingRequests(accountId) {
+    console.log(accountId);
+    try {
+      const incomingRequest = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        [Query.equal("repairer", [accountId]), Query.equal("pending", true)]
+      );
+
+      console.log("current user: " + incomingRequest.documents);
+      return incomingRequest.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
 }
 
 const appwriteService = new AppwriteService();
