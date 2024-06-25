@@ -54,7 +54,6 @@ const ManageRequests = () => {
       {user.id ? (
         <div className="container mx-auto p-4">
           <h1 className="text-3xl font-bold mb-4">Repairer Dashboard</h1>
-          {user.id}
           <div className="flex w-[80%] flex-col">
             <Tabs aria-label="Dynamic tabs" items={tabs}>
               {(item, index) => (
