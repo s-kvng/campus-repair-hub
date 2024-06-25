@@ -45,7 +45,7 @@ const ManageRequests = () => {
     {
       id: "completed-requests",
       label: "Completed Requests",
-      content: <CompletedRequestTab />,
+      content: <CompletedRequestTab userId={user.id} />,
     },
   ];
 
@@ -57,8 +57,8 @@ const ManageRequests = () => {
           {user.id}
           <div className="flex w-[80%] flex-col">
             <Tabs aria-label="Dynamic tabs" items={tabs}>
-              {(item) => (
-                <Tab key={item.id} title={item.label}>
+              {(item, index) => (
+                <Tab key={index} title={item.label}>
                   <Card>
                     <CardBody>{item.content}</CardBody>
                   </Card>

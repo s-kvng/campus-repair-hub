@@ -12,7 +12,7 @@ const ClaimedRequestTab = ({ claimedRequests }) => {
         <div>No incoming requests</div>
       ) : (
         claimedRequests.map((request) => (
-          <ClaimedRequestCard key={request.$id} request={request} />
+          <ClaimedRequestCard key={request.id} request={request} />
         ))
       )}
     </div>

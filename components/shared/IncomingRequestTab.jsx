@@ -2,8 +2,6 @@ import React from "react";
 import ServiceRequestCard from "../cards/ServiceRequestCard";
 
 const IncomingRequestTab = ({ incomingRequests }) => {
-  console.log("list->", incomingRequests);
-
   if (!incomingRequests) {
     return <div>Loading.......</div>;
   }

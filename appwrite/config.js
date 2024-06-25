@@ -160,7 +160,6 @@ export class AppwriteService {
         [Query.equal("accountId", currentAccount.$id)]
       );
 
-      console.log("current user: " + currentUser.documents);
       if (!currentUser) throw Error;
       return currentUser.documents[0];
     } catch (error) {
@@ -179,7 +178,6 @@ export class AppwriteService {
 
   /***** Requests  ******/
   async getIncomingRequests(accountId) {
-    console.log(accountId);
     try {
       const incomingRequest = await databases.listDocuments(
         conf.databaseId,
@@ -187,7 +185,6 @@ export class AppwriteService {
         [Query.equal("repairer", [accountId]), Query.equal("pending", true)]
       );
 
-      console.log("incoming docs: " + incomingRequest.documents);
       return incomingRequest.documents;
     } catch (error) {
       console.log("request document error -> ", error);
@@ -196,7 +193,6 @@ export class AppwriteService {
   }
 
   async getClaimedRequests(accountId) {
-    console.log("id to claim->", accountId);
     try {
       const claimedRequest = await databases.listDocuments(
         conf.databaseId,
@@ -204,8 +200,24 @@ export class AppwriteService {
         [Query.equal("repairer", [accountId]), Query.equal("claimed", true)]
       );
 
-      console.log("claimed ->: " + claimedRequest.documents);
       return claimedRequest.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
+
+  async getCompletedRequests(accountId) {
+    console.log("id to complete->", accountId);
+    try {
+      const completedRequest = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        [Query.equal("repairer", [accountId]), Query.equal("done", true)]
+      );
+
+      console.log("completed ->: " + completedRequest.documents);
+      return completedRequest.documents;
     } catch (error) {
       console.log("request document error -> ", error);
     }

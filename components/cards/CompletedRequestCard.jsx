@@ -10,7 +10,7 @@ import {
   Button,
 } from "@nextui-org/react";
 
-export default function CompletedRequestCard() {
+export default function CompletedRequestCard({ request }) {
   return (
     <Card className="max-w-[400px]">
       <CardHeader className="flex gap-3">
@@ -18,19 +18,25 @@ export default function CompletedRequestCard() {
           alt="nextui logo"
           height={40}
           radius="sm"
-          src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+          src={request?.user?.avatar}
           width={40}
         />
         <div className="flex flex-col">
-          <p className="text-md">NextUI</p>
-          <p className="text-small text-default-500">nextui.org</p>
+          <p className="text-md">{request?.user?.firstname}</p>
+          <p className="text-small text-default-500">{request?.user.email}</p>
         </div>
       </CardHeader>
       <Divider />
       <CardBody>
-        <p>location</p>
-        <p>discription</p>
-        <p>category</p>
+        <p className="mb-2">{request?.description}</p>
+        <div>
+          <p className="text-sm text-slate-700">
+            Location: {request?.location}
+          </p>
+          <p className="text-sm text-slate-700">
+            Category: {request?.category}
+          </p>
+        </div>
       </CardBody>
       <Divider />
       <CardFooter className="flex justify-around">
