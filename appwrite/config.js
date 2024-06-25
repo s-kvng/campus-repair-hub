@@ -223,6 +223,24 @@ export class AppwriteService {
     }
     return null;
   }
+
+  /********** Reviews  *********/
+  async getReviews(accountId) {
+    console.log("id to complete->", accountId);
+    try {
+      const reviews = await databases.listDocuments(
+        conf.databaseId,
+        conf.reviewsCollectionId,
+        [Query.equal("repairer", [accountId])]
+      );
+
+      console.log("completed ->: " + reviews.documents);
+      return reviews.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
 }
 
 const appwriteService = new AppwriteService();

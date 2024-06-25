@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import {
   EnvironmentTwoTone,
@@ -12,20 +12,40 @@ import {
 } from "@ant-design/icons";
 import { Col, Row, Rate, Avatar, Badge, Card, Skeleton } from "antd";
 import { Divider } from "@nextui-org/react";
-import { useUserContext } from "@/context/AuthContext";
 
-const { Meta } = Card;
+import appwriteService from "@/appwrite/config";
+import { useUserContext } from "@/context/AuthContext";
+import ReviewCard from "@/components/cards/ReviewCard";
+
 const Dashboard = () => {
-  const { user } = useUserContext();
+  const { user, isLoading } = useUserContext();
+  const [fetchLoading, setFetchLoading] = useState(false);
+  const [reviews, setReviews] = useState([]);
   console.log("user -> ", user);
-  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setFetchLoading(true);
+    const fetchRequest = async () => {
+      try {
+        const reviewData = await appwriteService.getReviews(user.id);
+        console.log("reviews -> ", reviewData);
+        setReviews(reviewData);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFetchLoading(false);
+      }
+    };
+
+    fetchRequest();
+  }, [user.id]);
 
   const defaultContent =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
   return (
     <div className="flex flex-col flex-1 min-h-screen">
-      {!user.id ? (
+      {!user.id || isLoading ? (
         <>
           <div>loading....</div>
         </>
@@ -134,23 +154,15 @@ const Dashboard = () => {
               <p className="font-bold">Reviews</p>
               <Divider className="my-4" />
 
-              <div>
-                <Card
-                  style={{
-                    width: 300,
-                    marginTop: 16,
-                  }}
-                  loading={loading}
-                >
-                  <Meta
-                    avatar={
-                      <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
-                    }
-                    title="Card title"
-                    description="This is the description"
+              {reviews?.map((review, index) => (
+                <div key={index} className=" grid sm:grid-cols-2">
+                  <ReviewCard
+                    key={review?.id}
+                    isLoading={fetchLoading}
+                    review={review}
                   />
-                </Card>
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </>

@@ -11,6 +11,9 @@ const conf = {
   serviceRequestsCollectionId: String(
     process.env.NEXT_PUBLIC_APPWRITE_SERVICE_REQUESTS_COLLECTION_ID
   ),
+  reviewsCollectionId: String(
+    process.env.NEXT_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID
+  ),
 };
 
 export default conf;
