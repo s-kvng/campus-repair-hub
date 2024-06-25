@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }) => {
           availability: currentServiceAccount.availability,
           category: currentServiceAccount.category,
           repairer: currentServiceAccount.repairer,
+          reviews: currentServiceAccount.reviews,
         });
         setIsAuthenticated(true);
 

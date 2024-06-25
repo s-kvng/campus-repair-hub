@@ -136,7 +136,7 @@ const Dashboard = () => {
                       title="Reviews"
                       indicator={<FundTwoTone />}
                     >
-                      {defaultContent}
+                      {`${user.reviews.length}`}
                     </AccordionItem>
                     <AccordionItem
                       key="6"
