@@ -10,7 +10,18 @@ import {
   Button,
 } from "@nextui-org/react";
 
-export default function CompletedRequestCard({ request }) {
+export default function CompletedRequestCard({ request, setCompletedRequest }) {
+  const deleteCompletedRequest = () => {
+    try {
+      console.log("Deleting..");
+      // await appwriteService.acceptRequest(request.id);
+      setCompletedRequest((prevRequests) =>
+        prevRequests.filter((req) => req.id !== request.id)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Card className="max-w-[400px]">
       <CardHeader className="flex gap-3">
@@ -42,6 +53,7 @@ export default function CompletedRequestCard({ request }) {
       <CardFooter className="flex justify-around">
         <Button
           color="danger"
+          onClick={deleteCompletedRequest}
           variant="flat"
           spinner={
             <svg

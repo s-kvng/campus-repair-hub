@@ -13,6 +13,7 @@ import {
 export default function ClaimedRequestCard({ request, setClaimedRequest }) {
   const handleDoneRequest = () => {
     try {
+      console.log("Claiming");
       // await appwriteService.acceptRequest(request.id);
       setClaimedRequest((prevRequests) =>
         prevRequests.filter((req) => req.id !== request.id)
@@ -54,7 +55,6 @@ export default function ClaimedRequestCard({ request, setClaimedRequest }) {
         <Button
           color="danger"
           variant="light"
-          onClick={handleDoneRequest}
           spinner={
             <svg
               className="animate-spin h-5 w-5 text-current"
@@ -83,6 +83,7 @@ export default function ClaimedRequestCard({ request, setClaimedRequest }) {
 
         <Button
           color="primary"
+          onClick={handleDoneRequest}
           spinner={
             <svg
               className="animate-spin h-5 w-5 text-current"

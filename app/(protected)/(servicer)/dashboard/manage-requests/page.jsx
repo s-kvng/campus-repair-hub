@@ -35,7 +35,12 @@ const ManageRequests = () => {
     {
       id: "incoming-requests",
       label: "Incoming Requests",
-      content: <IncomingRequestTab incomingRequests={incomingRequest} />,
+      content: (
+        <IncomingRequestTab
+          incomingRequests={incomingRequest}
+          setIncomingRequest={setIncomingRequest}
+        />
+      ),
     },
     {
       id: "claimed-requests",

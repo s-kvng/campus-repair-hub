@@ -207,6 +207,8 @@ export class AppwriteService {
     return null;
   }
 
+  async CompleteRequest(requestId) {}
+
   async getCompletedRequests(accountId) {
     console.log("id to complete->", accountId);
     try {

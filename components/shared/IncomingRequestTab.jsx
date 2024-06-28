@@ -1,7 +1,7 @@
 import React from "react";
 import ServiceRequestCard from "../cards/ServiceRequestCard";
 
-const IncomingRequestTab = ({ incomingRequests }) => {
+const IncomingRequestTab = ({ incomingRequests, setIncomingRequest }) => {
   if (!incomingRequests) {
     return <div>Loading.......</div>;
   }
@@ -13,7 +13,11 @@ const IncomingRequestTab = ({ incomingRequests }) => {
         <div>No incoming requests</div>
       ) : (
         incomingRequests.map((request) => (
-          <ServiceRequestCard key={request.id} request={request} />
+          <ServiceRequestCard
+            key={request.id}
+            request={request}
+            setIncomingRequest={setIncomingRequest}
+          />
         ))
       )}
     </div>
