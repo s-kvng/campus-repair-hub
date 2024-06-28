@@ -1,7 +1,7 @@
 import React from "react";
 import ClaimedRequestCard from "../cards/ClaimedRequestCard";
 
-const ClaimedRequestTab = ({ claimedRequests }) => {
+const ClaimedRequestTab = ({ claimedRequests, setClaimedRequest }) => {
   if (!claimedRequests) {
     return <div>Loading.......</div>;
   }
@@ -12,7 +12,11 @@ const ClaimedRequestTab = ({ claimedRequests }) => {
         <div>No incoming requests</div>
       ) : (
         claimedRequests.map((request) => (
-          <ClaimedRequestCard key={request.id} request={request} />
+          <ClaimedRequestCard
+            key={request.id}
+            request={request}
+            setClaimedRequest={setClaimedRequest}
+          />
         ))
       )}
     </div>

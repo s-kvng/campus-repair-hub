@@ -40,7 +40,12 @@ const ManageRequests = () => {
     {
       id: "claimed-requests",
       label: "Claimed Requests",
-      content: <ClaimedRequestTab claimedRequests={claimedRequest} />,
+      content: (
+        <ClaimedRequestTab
+          claimedRequests={claimedRequest}
+          setClaimedRequest={setClaimedRequest}
+        />
+      ),
     },
     {
       id: "completed-requests",

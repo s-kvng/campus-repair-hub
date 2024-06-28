@@ -10,7 +10,18 @@ import {
   Button,
 } from "@nextui-org/react";
 
-export default function ClaimedRequestCard({ request }) {
+export default function ClaimedRequestCard({ request, setClaimedRequest }) {
+  const handleDoneRequest = () => {
+    try {
+      // await appwriteService.acceptRequest(request.id);
+      setClaimedRequest((prevRequests) =>
+        prevRequests.filter((req) => req.id !== request.id)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Card className="max-w-[400px]">
       <CardHeader className="flex gap-3">
@@ -43,6 +54,7 @@ export default function ClaimedRequestCard({ request }) {
         <Button
           color="danger"
           variant="light"
+          onClick={handleDoneRequest}
           spinner={
             <svg
               className="animate-spin h-5 w-5 text-current"

@@ -108,7 +108,7 @@ export class AppwriteService {
     }
   }
 
-  async login(email, password) {
+  async login({ email, password }) {
     // login the user on appwrite
     try {
       return await account.createEmailPasswordSession(email, password);
