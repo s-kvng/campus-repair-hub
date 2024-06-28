@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import appwriteService from "@/appwrite/config";
+import useAuth from "@/context/useAuth";
 import { useRouter } from "next/navigation";
 
 import { EyeFilledIcon } from "../icons/EyeFilledIcon";
@@ -15,11 +16,10 @@ import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
 import { CircularProgress } from "@nextui-org/react";
 import { message } from "antd";
-import { useUserContext } from "@/context/AuthContext";
 
-const LoginForm = ({ className }) => {
-  const { checkAuthUser } = useUserContext();
+const ServicerSignInForm = ({ className }) => {
   const router = useRouter();
+  const { setAuthStatus } = useAuth();
   const { register, handleSubmit } = useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
@@ -47,26 +47,17 @@ const LoginForm = ({ className }) => {
 
     try {
       const session = await appwriteService.login({ email, password });
-      if (!session) {
-        message.error(`Ooops!! something went wrong`);
-        return;
-      }
-
       if (session) {
-        const repairer = "repairer";
-        const isLoggedIn = await checkAuthUser(repairer);
-
-        if (isLoggedIn) {
-          message.success(`You successfully logged in`);
-          router.push("/dashboard");
-        }
+        setAuthStatus(true);
+        setIsLoading(false);
+        message.success(`You successfully logged in`);
+        router.push("/dashboard");
       }
     } catch (error) {
       setError(error.message);
       console.log(error);
-      message.error("Something went wrong");
-    } finally {
       setIsLoading(false);
+      message.error("Something went wrong");
     }
   };
   return (
@@ -85,7 +76,7 @@ const LoginForm = ({ className }) => {
         <p className="mt-2 text-center text-base text-gray-600 mb-6">
           Don&apos;t have any account?&nbsp;
           <Link
-            href="/signup"
+            href="/servicer/signup"
             className="font-medium text-primary transition-all duration-200 hover:underline"
           >
             Sign Up
@@ -183,4 +174,4 @@ const LoginForm = ({ className }) => {
   );
 };
 
-export default LoginForm;
+export default ServicerSignInForm;
