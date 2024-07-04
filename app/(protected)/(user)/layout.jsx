@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -21,9 +21,30 @@ import {
   Button,
   Avatar,
 } from "@nextui-org/react";
+import appwriteService from "@/appwrite/config";
 
 const { Header, Content, Footer, Sider } = Layout;
 const UserLayout = ({ children }) => {
+  const [allServicers, setAllServicers] = useState([]);
+  const [topServicers, setTopServicers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchRequest = async () => {
+      try {
+        const servicersData = await appwriteService.getServicers();
+
+        setTopServicers(servicersData);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRequest();
+  }, []);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -45,42 +66,24 @@ const UserLayout = ({ children }) => {
           Top servicers{" "}
         </p>
         <div>
-          <div className="flex items-start mb-5 gap-x-2">
-            <Avatar
-              size="md"
-              showFallback
-              src="https://images.unsplash.com/broken"
-            />
-            <div>
-              <Link href="#">
-                <p className="text-white">Name</p>
-              </Link>
-              <p className="text-[11px] text-slate-400">REviews</p>
-            </div>
-          </div>
-          <div className="flex items-start mb-3 gap-x-2">
-            <Avatar
-              size="md"
-              showFallback
-              src="https://images.unsplash.com/broken"
-            />
-            <div>
-              <Link href="#">Name</Link>
-              <p className="text-[11px] text-slate-400">REviews</p>
-            </div>
-          </div>
-
-          <div className="flex items-start mb-3 gap-x-2">
-            <Avatar
-              size="md"
-              showFallback
-              src="https://images.unsplash.com/broken"
-            />
-            <div>
-              <Link href="#">Name</Link>
-              <p className="text-[11px] text-slate-400">REviews</p>
-            </div>
-          </div>
+          {topServicers
+            ? topServicers?.map((service) => (
+                <div
+                  key={service.$id}
+                  className="flex items-start mb-3 gap-x-2"
+                >
+                  <Avatar size="md" showFallback src={service.image} />
+                  <div>
+                    <Link href="#">
+                      <p className="text-white">{service.firstname}</p>
+                    </Link>
+                    <p className="text-[11px] text-slate-400">
+                      {service.reviews.length} reviews
+                    </p>
+                  </div>
+                </div>
+              ))
+            : "Loading..."}
         </div>
       </Sider>
 
@@ -96,18 +99,13 @@ const UserLayout = ({ children }) => {
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
             <NavbarItem>
-              <Link color="foreground" href="/">
-                Home
+              <Link color="foreground" href="/explore">
+                Explore
               </Link>
             </NavbarItem>
             <NavbarItem isActive>
-              <Link href="#" aria-current="page">
+              <Link href="profile" aria-current="page">
                 Profile
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link color="foreground" href="#">
-                Integrations
               </Link>
             </NavbarItem>
           </NavbarContent>
