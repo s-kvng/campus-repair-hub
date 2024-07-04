@@ -243,6 +243,22 @@ export class AppwriteService {
     }
     return null;
   }
+
+  /********* Fetch Servicer *********/
+  async getServicers() {
+    try {
+      const servicers = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceUsersCollectionId
+      );
+
+      console.log("completed ->: " + servicers.documents);
+      return servicers.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
 }
 
 const appwriteService = new AppwriteService();
