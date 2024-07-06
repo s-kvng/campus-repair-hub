@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -25,7 +26,7 @@ import appwriteService from "@/appwrite/config";
 
 const { Header, Content, Footer, Sider } = Layout;
 const UserLayout = ({ children }) => {
-  const [allServicers, setAllServicers] = useState([]);
+  const router = useRouter();
   const [topServicers, setTopServicers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,6 +46,17 @@ const UserLayout = ({ children }) => {
 
     fetchRequest();
   }, []);
+
+  const handleLogout = () => {
+    try {
+      const logout = appwriteService.logout();
+      if (!logout) throw new Error();
+
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -104,7 +116,7 @@ const UserLayout = ({ children }) => {
               </Link>
             </NavbarItem>
             <NavbarItem isActive>
-              <Link href="profile" aria-current="page">
+              <Link href="/profile" aria-current="page">
                 Profile
               </Link>
             </NavbarItem>
@@ -112,6 +124,17 @@ const UserLayout = ({ children }) => {
           <NavbarContent justify="end">
             <NavbarItem className="hidden lg:flex">
               <Avatar showFallback src="https://images.unsplash.com/broken" />
+            </NavbarItem>
+            <NavbarItem className="hidden lg:flex">
+              <Button
+                onClick={handleLogout}
+                size="small"
+                color="primary"
+                className="rounded-full"
+                icon={<UserOutlined />}
+              >
+                Logout
+              </Button>
             </NavbarItem>
           </NavbarContent>
         </Navbar>

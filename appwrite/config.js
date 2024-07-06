@@ -177,6 +177,39 @@ export class AppwriteService {
   }
 
   /***** Requests  ******/
+
+  async createRequest({ servicerId, userId, category, location, description }) {
+    console.log(
+      "createRequest => ",
+      servicerId,
+      userId,
+      category,
+      location,
+      description
+    );
+    try {
+      const data = await databases.createDocument(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        ID.unique(),
+        {
+          user: userId,
+          repairer: servicerId,
+          category,
+          location,
+          description,
+        }
+      );
+
+      if (!data) throw new Error();
+      return data;
+    } catch (error) {
+      console.log("creating request failed -> ", error);
+    }
+
+    return null;
+  }
+
   async getIncomingRequests(accountId) {
     try {
       const incomingRequest = await databases.listDocuments(
@@ -258,6 +291,22 @@ export class AppwriteService {
       console.log("request document error -> ", error);
     }
     return null;
+  }
+
+  //
+  async getServicerDetail(userId) {
+    try {
+      const servicer = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceUsersCollectionId,
+        [Query.equal("$id", [userId])]
+      );
+
+      if (!servicer) throw Error;
+      return servicer.documents[0];
+    } catch (error) {
+      console.log("Servicer Detail error: ", error);
+    }
   }
 }
 
