@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
         currentServiceAccount = await appwriteService.getCurrentServiceUser();
       } else if (role === "user") {
         currentAccount = await appwriteService.getCurrentUser();
-      } else if (role === undefined) {
+      } else if (!role) {
         currentAccount = await appwriteService.getCurrentUser();
 
         if (!currentAccount) {
@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
       console.log("current user ->", currentAccount);
       console.log("servicer user -> ", currentServiceAccount);
       if (currentAccount) {
+        console.log("normal");
         setUser({
           id: currentAccount.$id,
           acountId: currentAccount.accountId,
@@ -67,6 +68,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       if (currentServiceAccount) {
+        console.log("service");
         setUser({
           id: currentServiceAccount.$id,
           acountId: currentServiceAccount.accountId,

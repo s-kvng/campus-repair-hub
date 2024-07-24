@@ -5,6 +5,7 @@ import React from "react";
 import { Tabs, Space } from "antd";
 import UserProfileTab from "@/components/ui/UserProfileTab";
 import PendingRequestTab from "@/components/ui/PendingRequestTab";
+import AcceptRequestTab from "@/components/ui/AcceptedRequestTab";
 
 const Profile = () => {
   const { user } = useUserContext();
@@ -19,6 +20,11 @@ const Profile = () => {
       label: `Pending Requests`,
       key: `2`,
       children: <PendingRequestTab />,
+    },
+    {
+      label: `Accepted Requests`,
+      key: `3`,
+      children: <AcceptRequestTab />,
     },
   ];
 
