@@ -4,6 +4,7 @@ import { useUserContext } from "@/context/AuthContext";
 import React from "react";
 import { Tabs, Space } from "antd";
 import UserProfileTab from "@/components/ui/UserProfileTab";
+import PendingRequestTab from "@/components/ui/PendingRequestTab";
 
 const Profile = () => {
   const { user } = useUserContext();
@@ -17,7 +18,7 @@ const Profile = () => {
     {
       label: `Pending Requests`,
       key: `2`,
-      children: `Content of Tab 2`,
+      children: <PendingRequestTab />,
     },
   ];
 
