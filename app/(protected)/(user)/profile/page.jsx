@@ -3,13 +3,16 @@
 import { useUserContext } from "@/context/AuthContext";
 import React from "react";
 import { Tabs, Space } from "antd";
+import UserProfileTab from "@/components/ui/UserProfileTab";
 
 const Profile = () => {
+  const { user } = useUserContext();
+  console.log(user.repairer);
   const tabItems = [
     {
       label: `Info`,
       key: `1`,
-      children: `Content of Tab 1`,
+      children: <UserProfileTab />,
     },
     {
       label: `Pending Requests`,
@@ -18,8 +21,6 @@ const Profile = () => {
     },
   ];
 
-  const { user } = useUserContext();
-  console.log(user.repairer);
   return (
     <div className="text-black min-h-[75vh]">
       <div>Profile {user.firstname}</div>
