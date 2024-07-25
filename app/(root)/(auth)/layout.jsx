@@ -10,6 +10,7 @@ const AuthLayout = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const checkAuthentication = async () => {
       try {
         const isLoggedIn = await checkAuthUser();

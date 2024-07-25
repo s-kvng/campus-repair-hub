@@ -18,6 +18,7 @@ import { message } from "antd";
 import { useUserContext } from "@/context/AuthContext";
 
 const LoginForm = ({ className }) => {
+  const { checkAuthUser } = useUserContext();
   const router = useRouter();
   const { register, handleSubmit } = useForm();
   const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +44,32 @@ const LoginForm = ({ className }) => {
     console.log(data);
     setIsLoading(true);
     const { email, password } = data;
+
+    try {
+      const session = await appwriteService.login({ email, password });
+      if (!session) {
+        message.error(`Ooops!! something went wrong`);
+        return;
+      }
+
+      if (session) {
+        const repairer = "user";
+        const isLoggedIn = await checkAuthUser(repairer);
+
+        if (isLoggedIn) {
+          message.success(`You successfully logged in`);
+          router.push("/explore");
+        }
+      }
+    } catch (error) {
+      setError(error.message);
+      console.log(error);
+      message.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <div className="flex items-center justify-center w-full z-10">
       <div

@@ -48,9 +48,9 @@ const UserLayout = ({ children }) => {
     fetchRequest();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      const logout = appwriteService.logout();
+      const logout = await appwriteService.logout();
       if (!logout) throw new Error();
 
       router.push("/login");

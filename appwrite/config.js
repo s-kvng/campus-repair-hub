@@ -170,7 +170,8 @@ export class AppwriteService {
 
   async logout() {
     try {
-      return await account.deleteSession("current");
+      console.log("logout");
+      return await account.deleteSessions();
     } catch (error) {
       console.log("logout error -> ", error);
     }
