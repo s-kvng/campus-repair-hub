@@ -18,7 +18,6 @@ import { message } from "antd";
 import { useUserContext } from "@/context/AuthContext";
 
 const LoginForm = ({ className }) => {
-  const { checkAuthUser } = useUserContext();
   const router = useRouter();
   const { register, handleSubmit } = useForm();
   const [isVisible, setIsVisible] = useState(false);
@@ -44,30 +43,6 @@ const LoginForm = ({ className }) => {
     console.log(data);
     setIsLoading(true);
     const { email, password } = data;
-
-    try {
-      const session = await appwriteService.login({ email, password });
-      if (!session) {
-        message.error(`Ooops!! something went wrong`);
-        return;
-      }
-
-      if (session) {
-        const repairer = "repairer";
-        const isLoggedIn = await checkAuthUser(repairer);
-
-        if (isLoggedIn) {
-          message.success(`You successfully logged in`);
-          router.push("/dashboard");
-        }
-      }
-    } catch (error) {
-      setError(error.message);
-      console.log(error);
-      message.error("Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
   };
   return (
     <div className="flex items-center justify-center w-full z-10">
@@ -79,16 +54,25 @@ const LoginForm = ({ className }) => {
             <img src="/favicon.ico" alt="Logo" />
           </span>
         </div>
-        <h2 className="text-center text-2xl font-bold leading-tight text-black">
+        <h2 className="text-center text-2xl font-bold leading-tight text-white">
           Sign in to your account
         </h2>
-        <p className="mt-2 text-center text-base text-gray-600 mb-6">
+        <p className="mt-2 text-center text-base text-gray-600">
           Don&apos;t have any account?&nbsp;
           <Link
             href="/signup"
             className="font-medium text-primary transition-all duration-200 hover:underline"
           >
             Sign Up
+          </Link>
+        </p>
+        <p className="mt-1 text-center text-sm text-gray-600 mb-6">
+          Are you are servicer ?&nbsp;
+          <Link
+            href="/servicer/login"
+            className="font-medium text-primary transition-all duration-200 hover:underline"
+          >
+            login
           </Link>
         </p>
 
@@ -112,6 +96,9 @@ const LoginForm = ({ className }) => {
                     type="email"
                     variant="bordered"
                     label="Email"
+                    classNames={{
+                      input: ["text-white/90", "placeholder:text-white/90"],
+                    }}
                     isClearable
                     {...register("email", { required: true })}
                   />
@@ -125,6 +112,9 @@ const LoginForm = ({ className }) => {
                     onInvalid={isInvalid}
                     onValueChange={setValue}
                     color={isInvalid}
+                    classNames={{
+                      input: ["text-white/90", "placeholder:text-white/90"],
+                    }}
                     errorMessage={isInvalid && "Please enter a valid password"}
                     endContent={
                       <button
@@ -162,7 +152,7 @@ const LoginForm = ({ className }) => {
                 </Button>
               </div>
 
-              <div className="text-center w-full">
+              {/* <div className="text-center w-full">
                 <div className=" flex items-center mb-4">
                   <Divider className=" w-[40%]" />
                   <span className=" w-[20%]">OR</span>
@@ -174,7 +164,7 @@ const LoginForm = ({ className }) => {
                     <GoogleIcon />
                   </Link>
                 </div>
-              </div>
+              </div> */}
             </form>
           </>
         )}

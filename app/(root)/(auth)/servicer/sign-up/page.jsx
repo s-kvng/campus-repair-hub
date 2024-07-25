@@ -12,15 +12,24 @@ const ServicerSignUp = () => {
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight text-dark">
-          Sign Up to your account
+          Sign Up for your Servicer account
         </h2>
-        <p className="mt-2 text-center text-base text-gray-600 mb-2">
+        <p className="mt-2 text-center text-base text-gray-600">
           Already have an account?&nbsp;
           <Link
-            href="/login"
+            href="/servicer/login"
             className="font-medium text-primary transition-all duration-200 hover:underline"
           >
             Login
+          </Link>
+        </p>{" "}
+        <p className="mt-1 text-center text-sm text-gray-600 mb-2">
+          Are you a client?&nbsp;
+          <Link
+            href="/signup"
+            className="font-medium text-primary transition-all duration-200 hover:underline"
+          >
+            SignUp
           </Link>
         </p>{" "}
         <ServicerSignUpForm />{" "}

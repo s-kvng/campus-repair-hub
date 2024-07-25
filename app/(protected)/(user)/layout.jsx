@@ -28,7 +28,6 @@ const { Header, Content, Footer, Sider } = Layout;
 const UserLayout = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
   const [topServicers, setTopServicers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,6 +58,7 @@ const UserLayout = ({ children }) => {
       console.log(error);
     }
   };
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
