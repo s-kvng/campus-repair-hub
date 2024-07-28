@@ -6,7 +6,7 @@ const IncomingRequestTab = ({ incomingRequests, setIncomingRequest }) => {
     return <div>Loading.......</div>;
   }
   return (
-    <div>
+    <div className="px-3 min-h-[50vh] max-h-[50vh] overflow-auto">
       <h1 className="mb-10">Incoming Requests</h1>
 
       {incomingRequests.length === 0 ? (

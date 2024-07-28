@@ -28,7 +28,7 @@ const AuthContext = createContext(INITIAL_STATE);
 export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [user, setUser] = useState(INITIAL_USER);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const checkAuthUser = async (role) => {
@@ -62,6 +62,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       if (currentServiceAccount) {
+        console.log("Current service account");
+        console.log(currentServiceAccount);
         setUser({
           id: currentServiceAccount.$id,
           accountId: currentServiceAccount.accountId,
@@ -78,6 +80,7 @@ export const AuthProvider = ({ children }) => {
           reviews: currentServiceAccount.reviews,
         });
         setIsAuthenticated(true);
+        console.log("user is set");
         return true;
       }
       return false;
@@ -88,6 +91,19 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const cookieFallback = localStorage.getItem("cookieFallback");
+    if (
+      cookieFallback === "[]" ||
+      cookieFallback === null ||
+      cookieFallback === undefined
+    ) {
+      router.push("/login");
+    }
+
+    checkAuthUser();
+  }, []);
 
   const value = {
     user,

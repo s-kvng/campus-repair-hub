@@ -13,10 +13,10 @@ import {
 export default function ClaimedRequestCard({ request, setClaimedRequest }) {
   const handleDoneRequest = () => {
     try {
-      console.log("Claiming");
+      console.log("completing");
       // await appwriteService.acceptRequest(request.id);
       setClaimedRequest((prevRequests) =>
-        prevRequests.filter((req) => req.id !== request.id)
+        prevRequests.filter((req) => req.$id !== request.$id)
       );
     } catch (error) {
       console.log(error);
@@ -24,7 +24,7 @@ export default function ClaimedRequestCard({ request, setClaimedRequest }) {
   };
 
   return (
-    <Card className="max-w-[400px]">
+    <Card className="max-w-[400px] mb-5">
       <CardHeader className="flex gap-3">
         <Image
           alt="nextui logo"

@@ -15,9 +15,11 @@ import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
 import { CircularProgress } from "@nextui-org/react";
 import { message } from "antd";
+import { useUserContext } from "@/context/AuthContext";
 
 const ServicerSignInForm = ({ className }) => {
   const router = useRouter();
+  const { checkAuthUser } = useUserContext();
   const { register, handleSubmit } = useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");

@@ -6,7 +6,7 @@ const ClaimedRequestTab = ({ claimedRequests, setClaimedRequest }) => {
     return <div>Loading.......</div>;
   }
   return (
-    <div>
+    <div className=" px-3 min-h-[50vh] max-h-[50vh] overflow-auto">
       <p className="mb-10">Claimed Requests</p>
       {claimedRequests.length === 0 ? (
         <div>No incoming requests</div>

@@ -260,6 +260,23 @@ export class AppwriteService {
     return null;
   }
 
+  async claimRequest(requestId) {
+    console.log("claiming request");
+    try {
+      const data = await databases.updateDocument(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        requestId,
+        {
+          pending: false,
+          claimed: true,
+        }
+      );
+    } catch (error) {
+      console.log("claiming request failed -> ", error);
+    }
+  }
+
   /********** Reviews  *********/
   async getReviews(accountId) {
     console.log("id to complete->", accountId);
