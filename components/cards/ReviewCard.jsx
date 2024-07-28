@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Avatar, Badge, Card, Skeleton } from "antd";
+import { Avatar, Badge, Card, Skeleton, Rate } from "antd";
 
 const { Meta } = Card;
 const ReviewCard = ({ fetchLoading, review }) => {
@@ -15,12 +15,13 @@ const ReviewCard = ({ fetchLoading, review }) => {
         loading={fetchLoading}
       >
         <Meta
-          avatar={
-            <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
-          }
+          avatar={<Avatar src={review?.author?.avatar} />}
           title={review?.author?.firstname}
           description={review?.content}
         />
+        <div className="mt-2">
+          <Rate allowHalf disabled defaultValue={review?.rate} />
+        </div>
       </Card>
     </>
   );

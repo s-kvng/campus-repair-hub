@@ -353,6 +353,27 @@ export class AppwriteService {
     return null;
   }
 
+  async addReview({ servicerId, userId, content, rate }) {
+    console.log("Adding review");
+    try {
+      const data = await databases.createDocument(
+        conf.databaseId,
+        conf.reviewsCollectionId,
+        ID.unique(),
+        {
+          author: userId,
+          repairer: servicerId,
+          rate: rate,
+          content: content,
+        }
+      );
+
+      return data;
+    } catch (error) {
+      console.log("Adding review failed -> ", error);
+    }
+  }
+
   /********* Fetch Servicer *********/
   async getServicers() {
     try {
