@@ -21,9 +21,10 @@ const UserPendingRequestCard = ({ pendingRequest, isLoading }) => {
       >
         <Card.Meta
           avatar={<Avatar src={pendingRequest?.repairer?.avatar} />}
-          title={pendingRequest?.repairer?.firstname}
+          title={`${pendingRequest?.repairer?.firstname} ${pendingRequest?.repairer?.lastname}`}
           description={
             <>
+              <p>Description : {pendingRequest?.description}</p>
               <p>Location : {pendingRequest?.location}</p>
               <p>Category : {pendingRequest?.category}</p>
             </>
