@@ -56,6 +56,8 @@ export const AuthProvider = ({ children }) => {
           email: currentAccount.email,
           avatarUrl: currentAccount.avatar,
           repairer: currentAccount.repairer,
+          reviews: currentAccount.reviews,
+          requests: currentAccount.requests,
         });
         setIsAuthenticated(true);
         return true;

@@ -14,7 +14,7 @@ const Profile = () => {
     {
       label: `Info`,
       key: `1`,
-      children: <UserProfileTab />,
+      children: <UserProfileTab user={user} />,
     },
     {
       label: `Pending Requests`,
