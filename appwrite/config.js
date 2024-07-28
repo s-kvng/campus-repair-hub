@@ -292,6 +292,19 @@ export class AppwriteService {
     }
   }
 
+  async deleteRequest(requestId) {
+    console.log("deleting request");
+    try {
+      const data = await databases.deleteDocument(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        requestId
+      );
+    } catch (error) {
+      console.log("Deleting request failed -> ", error);
+    }
+  }
+
   /********** Reviews  *********/
   async getReviews(accountId) {
     console.log("id to complete->", accountId);
