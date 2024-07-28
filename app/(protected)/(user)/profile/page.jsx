@@ -9,7 +9,7 @@ import AcceptRequestTab from "@/components/ui/AcceptedRequestTab";
 
 const Profile = () => {
   const { user } = useUserContext();
-  console.log(user.repairer);
+  console.log(user.id);
   const tabItems = [
     {
       label: `Info`,
@@ -19,12 +19,12 @@ const Profile = () => {
     {
       label: `Pending Requests`,
       key: `2`,
-      children: <PendingRequestTab />,
+      children: <PendingRequestTab user={user} />,
     },
     {
       label: `Accepted Requests`,
       key: `3`,
-      children: <AcceptRequestTab />,
+      children: <AcceptRequestTab user={user} />,
     },
   ];
 

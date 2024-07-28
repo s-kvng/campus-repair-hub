@@ -258,6 +258,21 @@ export class AppwriteService {
     return null;
   }
 
+  async getUserPendingRequests(accountId) {
+    try {
+      const incomingRequest = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        [Query.equal("user", [accountId]), Query.equal("pending", true)]
+      );
+
+      return incomingRequest.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
+
   async claimRequest(requestId) {
     console.log("claiming request");
     try {
