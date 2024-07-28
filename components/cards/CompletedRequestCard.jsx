@@ -23,7 +23,7 @@ export default function CompletedRequestCard({ request, setCompletedRequest }) {
     }
   };
   return (
-    <Card className="max-w-[400px]">
+    <Card className="max-w-[400px] mb-5">
       <CardHeader className="flex gap-3">
         <Image
           alt="nextui logo"

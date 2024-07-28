@@ -28,7 +28,7 @@ const CompletedRequestTab = ({ userId }) => {
   }, []);
 
   return (
-    <div>
+    <div className="px-3 min-h-[50vh] max-h-[50vh] overflow-auto">
       <p className="mb-10">Completed Requests</p>
 
       {completedRequest.length === 0 ? (

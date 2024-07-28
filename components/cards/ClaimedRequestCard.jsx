@@ -9,15 +9,16 @@ import {
   Image,
   Button,
 } from "@nextui-org/react";
+import appwriteService from "@/appwrite/config";
 
 export default function ClaimedRequestCard({ request, setClaimedRequest }) {
-  const handleDoneRequest = () => {
+  const handleDoneRequest = async () => {
     try {
       console.log("completing");
-      // await appwriteService.acceptRequest(request.id);
       setClaimedRequest((prevRequests) =>
         prevRequests.filter((req) => req.$id !== request.$id)
       );
+      await appwriteService.completeRequest(request.$id);
     } catch (error) {
       console.log(error);
     }

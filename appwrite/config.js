@@ -241,8 +241,6 @@ export class AppwriteService {
     return null;
   }
 
-  async CompleteRequest(requestId) {}
-
   async getCompletedRequests(accountId) {
     console.log("id to complete->", accountId);
     try {
@@ -270,6 +268,23 @@ export class AppwriteService {
         {
           pending: false,
           claimed: true,
+        }
+      );
+    } catch (error) {
+      console.log("claiming request failed -> ", error);
+    }
+  }
+
+  async completeRequest(requestId) {
+    console.log("completing request");
+    try {
+      const data = await databases.updateDocument(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        requestId,
+        {
+          claimed: false,
+          done: true,
         }
       );
     } catch (error) {
