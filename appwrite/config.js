@@ -273,6 +273,21 @@ export class AppwriteService {
     return null;
   }
 
+  async getUserAcceptedRequests(accountId) {
+    try {
+      const acceptedRequest = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        [Query.equal("user", [accountId]), Query.equal("claimed", true)]
+      );
+
+      return acceptedRequest.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
+
   async claimRequest(requestId) {
     console.log("claiming request");
     try {

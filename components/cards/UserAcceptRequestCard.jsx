@@ -11,24 +11,22 @@ import { Avatar, Card } from "antd";
 
 const actions = [<DeleteOutlined key="delete" />];
 
-const UserAcceptRequestCard = () => {
-  const [loading, setLoading] = useState(false);
+const UserAcceptRequestCard = ({ acceptedRequest, isLoading }) => {
   return (
     <>
       <Card
-        loading={loading}
+        loading={isLoading}
         actions={actions}
         style={{ minWidth: 300, marginBottom: 6 }}
       >
         <Card.Meta
-          avatar={
-            <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
-          }
-          title="Card title"
+          avatar={<Avatar src={acceptedRequest?.repairer?.avatar} />}
+          title={`${acceptedRequest?.repairer?.firstname} ${acceptedRequest?.repairer?.lastname}`}
           description={
             <>
-              <p>This is the description</p>
-              <p>This is the description</p>
+              <p>Description: {acceptedRequest?.description}</p>
+              <p>Location : {acceptedRequest?.location}</p>
+              <p>Category : {acceptedRequest?.category}</p>
             </>
           }
         />
