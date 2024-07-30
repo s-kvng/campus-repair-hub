@@ -15,6 +15,7 @@ import { GoogleIcon } from "../icons/GoogleIcon";
 import appwriteService from "@/appwrite/config";
 import { message } from "antd";
 import { CircularProgress } from "@nextui-org/react";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignUpForm = () => {
   const {
@@ -22,6 +23,8 @@ const SignUpForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { checkAuthUser } = useUserContext();
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +49,45 @@ const SignUpForm = () => {
     const { firstname, lastname, email, password } = data;
     console.log(data);
     const name = `${firstname} ${lastname}`;
+
+    try {
+      const userData = await appwriteService.createNormalUser({
+        email: email,
+        password: password,
+        name: name,
+        firstname: firstname,
+        lastname: lastname,
+      });
+
+      console.log("user created->", userData);
+      if (!userData) {
+        message.error(`Ooops!! something went wrong`);
+        return;
+      }
+
+      const session = await appwriteService.login({ email, password });
+
+      console.log("session->", session);
+      if (!session) {
+        message.error(`Ooops!! something went wrong`);
+        return;
+      }
+
+      const isLoggedIn = await checkAuthUser("user");
+      if (isLoggedIn) {
+        message.success(`Your account has been created, Mr. ${firstname}`);
+        router.replace("/explore");
+      } else {
+        message.error(`🫢Ooops Signup Failed, Please Try Again`);
+        return;
+      }
+    } catch (error) {
+      setError(error.message);
+      console.log(error);
+      message.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="flex items-center justify-center w-full z-10 py-8 px-4 sm:px-0">
