@@ -11,7 +11,7 @@ export const INITIAL_USER = {
   lastname: "",
   email: "",
   avatarUrl: "",
-  repairer: "",
+  repairer: false,
 };
 
 export const INITIAL_STATE = {
@@ -20,19 +20,18 @@ export const INITIAL_STATE = {
   isAuthenticated: false,
   setUser: () => {},
   setIsAuthenticated: () => {},
-  checkAuthUser: async () => boolean,
+  checkAuthUser: async () => false,
 };
 
 const AuthContext = createContext(INITIAL_STATE);
 
 export const AuthProvider = ({ children }) => {
   const router = useRouter();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(INITIAL_USER);
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const checkAuthUser = async (role) => {
-    console.log("role: ", role);
     let currentAccount;
     let currentServiceAccount;
     setIsLoading(true);
@@ -41,35 +40,35 @@ export const AuthProvider = ({ children }) => {
         currentServiceAccount = await appwriteService.getCurrentServiceUser();
       } else if (role === "user") {
         currentAccount = await appwriteService.getCurrentUser();
-      } else if (role === undefined) {
+      } else {
         currentAccount = await appwriteService.getCurrentUser();
-
         if (!currentAccount) {
           currentServiceAccount = await appwriteService.getCurrentServiceUser();
         }
       }
 
-      console.log("current user ->", currentAccount);
-      console.log("servicer user -> ", currentServiceAccount);
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
-          acountId: currentAccount.accountId,
+          accountId: currentAccount.accountId,
           firstname: currentAccount.firstname,
           lastname: currentAccount.lastname,
           email: currentAccount.email,
           avatarUrl: currentAccount.avatar,
           repairer: currentAccount.repairer,
+          reviews: currentAccount.reviews,
+          requests: currentAccount.requests,
         });
         setIsAuthenticated(true);
-
         return true;
       }
 
       if (currentServiceAccount) {
+        console.log("Current service account");
+        console.log(currentServiceAccount);
         setUser({
           id: currentServiceAccount.$id,
-          acountId: currentServiceAccount.accountId,
+          accountId: currentServiceAccount.accountId,
           firstname: currentServiceAccount.firstname,
           lastname: currentServiceAccount.lastname,
           email: currentServiceAccount.email,
@@ -83,12 +82,12 @@ export const AuthProvider = ({ children }) => {
           reviews: currentServiceAccount.reviews,
         });
         setIsAuthenticated(true);
-
+        console.log("user is set");
         return true;
       }
       return false;
     } catch (error) {
-      console.error(error);
+      console.error("Error checking authentication:", error);
       return false;
     } finally {
       setIsLoading(false);
@@ -109,10 +108,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const value = {
-    user: user,
-    isLoading: isLoading,
-    isAuthenticated: isAuthenticated,
-    setUser: setUser,
+    user,
+    isLoading,
+    isAuthenticated,
+    setUser,
     setIsAuthenticated,
     checkAuthUser,
   };

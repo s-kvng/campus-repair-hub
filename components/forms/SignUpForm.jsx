@@ -18,13 +18,13 @@ import { CircularProgress } from "@nextui-org/react";
 import { useUserContext } from "@/context/AuthContext";
 
 const SignUpForm = () => {
-  const router = useRouter();
-  const { user, checkAuthUser } = useUserContext();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { checkAuthUser } = useUserContext();
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +65,7 @@ const SignUpForm = () => {
         return;
       }
 
-      const session = await appwriteService.login(email, password);
+      const session = await appwriteService.login({ email, password });
 
       console.log("session->", session);
       if (!session) {
@@ -76,7 +76,7 @@ const SignUpForm = () => {
       const isLoggedIn = await checkAuthUser("user");
       if (isLoggedIn) {
         message.success(`Your account has been created, Mr. ${firstname}`);
-        router.replace("/feed");
+        router.replace("/explore");
       } else {
         message.error(`🫢Ooops Signup Failed, Please Try Again`);
         return;

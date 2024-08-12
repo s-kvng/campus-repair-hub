@@ -9,21 +9,22 @@ import {
   Image,
   Button,
 } from "@nextui-org/react";
+import appwriteService from "@/appwrite/config";
 
 export default function CompletedRequestCard({ request, setCompletedRequest }) {
-  const deleteCompletedRequest = () => {
+  const deleteCompletedRequest = async () => {
     try {
       console.log("Deleting..");
-      // await appwriteService.acceptRequest(request.id);
       setCompletedRequest((prevRequests) =>
-        prevRequests.filter((req) => req.id !== request.id)
+        prevRequests.filter((req) => req.$id !== request.$id)
       );
+      await appwriteService.deleteRequest(request.$id);
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <Card className="max-w-[400px]">
+    <Card className="max-w-[400px] mb-5">
       <CardHeader className="flex gap-3">
         <Image
           alt="nextui logo"

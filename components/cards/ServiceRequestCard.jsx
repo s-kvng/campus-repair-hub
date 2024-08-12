@@ -9,14 +9,16 @@ import {
   Image,
   Button,
 } from "@nextui-org/react";
+import appwriteService from "@/appwrite/config";
 
 export default function ServiceRequestCard({ request, setIncomingRequest }) {
-  const handleClaimRequest = () => {
+  const handleClaimRequest = async () => {
     try {
       console.log("Claiming");
-      // await appwriteService.acceptRequest(request.id);
+      console.log(request.$id);
+      await appwriteService.claimRequest(request.$id);
       setIncomingRequest((prevRequests) =>
-        prevRequests.filter((req) => req.id !== request.id)
+        prevRequests.filter((req) => req.$id !== request.$id)
       );
     } catch (error) {
       console.log(error);
@@ -24,7 +26,7 @@ export default function ServiceRequestCard({ request, setIncomingRequest }) {
   };
 
   return (
-    <Card className="max-w-[400px]">
+    <Card className="max-w-[400px] mb-5">
       <CardHeader className="flex gap-3">
         <Image
           alt="nextui logo"

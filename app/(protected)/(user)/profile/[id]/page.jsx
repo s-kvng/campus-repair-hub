@@ -43,8 +43,11 @@ const ServicerProfile = ({ params }) => {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [content, setContent] = useState("");
+  const [rate, setRate] = useState(1);
 
   useEffect(() => {
     setIsLoading(true);
@@ -72,10 +75,19 @@ const ServicerProfile = ({ params }) => {
     setOpen(true);
   };
 
+  const reviewShowModal = () => {
+    setReviewOpen(true);
+  };
+
   // Function to close modal
   const handleCancel = () => {
     console.log("Clicked cancel button");
     setOpen(false);
+  };
+
+  //
+  const handleReviewClose = () => {
+    setReviewOpen(false);
   };
 
   const handleSendRequest = async () => {
@@ -102,6 +114,28 @@ const ServicerProfile = ({ params }) => {
     }
   };
 
+  const handleAddReview = async () => {
+    const rating = Number(rate);
+    try {
+      const request = await appwriteService.addReview({
+        servicerId: user.$id,
+        userId: currentUser.id,
+        content: content,
+        rate: rating,
+      });
+
+      console.log(request);
+      if (!request) throw new Error();
+
+      if (request) {
+        message.success("Review added successfully");
+        setReviewOpen(false);
+      }
+    } catch (error) {
+      message.error("Failed to add review");
+      console.log("Add review error -> ", error);
+    }
+  };
   return (
     <div className="flex flex-col flex-1 min-h-screen">
       {contextHolder}
@@ -232,20 +266,32 @@ const ServicerProfile = ({ params }) => {
             <div className="mb-10">
               <p className="font-bold">Reviews</p>
               <Divider className="my-4" />
+              <div>
+                <Button
+                  onClick={reviewShowModal}
+                  color="primary"
+                  variant="shadow"
+                >
+                  Add Review
+                </Button>
+              </div>
 
-              {user?.reviews?.map((review, index) => (
-                <div key={index} className=" grid sm:grid-cols-2">
-                  <ReviewCard
-                    key={review?.id}
-                    isLoading={isLoading}
-                    review={review}
-                  />
-                </div>
-              ))}
+              <div className=" grid sm:grid-cols-2">
+                {user?.reviews?.map((review, index) => (
+                  <div key={index}>
+                    <ReviewCard
+                      key={review?.id}
+                      isLoading={isLoading}
+                      review={review}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </>
       )}
+      {/* modal for request */}
       <Modal
         title="Submit Request"
         open={open}
@@ -281,6 +327,35 @@ const ServicerProfile = ({ params }) => {
               className=""
               value={description}
               onValueChange={setDescription}
+            />
+          </div>
+        </form>
+      </Modal>
+
+      {/* modal for review */}
+      <Modal
+        title="Submit Review"
+        open={reviewOpen}
+        onOk={handleAddReview}
+        confirmLoading={confirmLoading}
+        onCancel={handleReviewClose}
+      >
+        <form>
+          <div className=" flex flex-col gap-y-3">
+            <Textarea
+              label="Content"
+              placeholder="Enter your Content"
+              variant="bordered"
+              className=""
+              value={content}
+              onValueChange={setContent}
+            />
+            <Input
+              label="Rate (1 - 5)"
+              placeholder="Rate Repairer (1 - 5)"
+              variant="bordered"
+              value={rate}
+              onValueChange={setRate}
             />
           </div>
         </form>

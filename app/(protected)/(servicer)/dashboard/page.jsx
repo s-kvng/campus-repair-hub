@@ -21,7 +21,6 @@ const Dashboard = () => {
   const { user, isLoading } = useUserContext();
   const [fetchLoading, setFetchLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
-  console.log("user -> ", user);
 
   useEffect(() => {
     setFetchLoading(true);

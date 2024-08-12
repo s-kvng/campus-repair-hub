@@ -10,27 +10,25 @@ const AuthLayout = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async function checks() {
-      setIsLoading(true);
+    setIsLoading(true);
+    const checkAuthentication = async () => {
       try {
         const isLoggedIn = await checkAuthUser();
         if (isLoggedIn) {
-          console.log("checks user", user);
-          console.log("checks user repaier", user.repairer);
-          if (user.repairer === true) {
+          if (user.repairer) {
             router.push("/dashboard");
           } else {
             router.push("/profile");
           }
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error checking authentication:", error);
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
-    checks();
+    checkAuthentication();
   }, []);
 
   return <>{isLoading ? <div>Loading...</div> : <main> {children}</main>}</>;

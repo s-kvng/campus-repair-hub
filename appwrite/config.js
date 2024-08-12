@@ -170,7 +170,8 @@ export class AppwriteService {
 
   async logout() {
     try {
-      return await account.deleteSession("current");
+      console.log("logout");
+      return await account.deleteSessions();
     } catch (error) {
       console.log("logout error -> ", error);
     }
@@ -240,8 +241,6 @@ export class AppwriteService {
     return null;
   }
 
-  async CompleteRequest(requestId) {}
-
   async getCompletedRequests(accountId) {
     console.log("id to complete->", accountId);
     try {
@@ -257,6 +256,83 @@ export class AppwriteService {
       console.log("request document error -> ", error);
     }
     return null;
+  }
+
+  async getUserPendingRequests(accountId) {
+    try {
+      const incomingRequest = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        [Query.equal("user", [accountId]), Query.equal("pending", true)]
+      );
+
+      return incomingRequest.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
+
+  async getUserAcceptedRequests(accountId) {
+    try {
+      const acceptedRequest = await databases.listDocuments(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        [Query.equal("user", [accountId]), Query.equal("claimed", true)]
+      );
+
+      return acceptedRequest.documents;
+    } catch (error) {
+      console.log("request document error -> ", error);
+    }
+    return null;
+  }
+
+  async claimRequest(requestId) {
+    console.log("claiming request");
+    try {
+      const data = await databases.updateDocument(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        requestId,
+        {
+          pending: false,
+          claimed: true,
+        }
+      );
+    } catch (error) {
+      console.log("claiming request failed -> ", error);
+    }
+  }
+
+  async completeRequest(requestId) {
+    console.log("completing request");
+    try {
+      const data = await databases.updateDocument(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        requestId,
+        {
+          claimed: false,
+          done: true,
+        }
+      );
+    } catch (error) {
+      console.log("claiming request failed -> ", error);
+    }
+  }
+
+  async deleteRequest(requestId) {
+    console.log("deleting request");
+    try {
+      const data = await databases.deleteDocument(
+        conf.databaseId,
+        conf.serviceRequestsCollectionId,
+        requestId
+      );
+    } catch (error) {
+      console.log("Deleting request failed -> ", error);
+    }
   }
 
   /********** Reviews  *********/
@@ -275,6 +351,27 @@ export class AppwriteService {
       console.log("request document error -> ", error);
     }
     return null;
+  }
+
+  async addReview({ servicerId, userId, content, rate }) {
+    console.log("Adding review");
+    try {
+      const data = await databases.createDocument(
+        conf.databaseId,
+        conf.reviewsCollectionId,
+        ID.unique(),
+        {
+          author: userId,
+          repairer: servicerId,
+          rate: rate,
+          content: content,
+        }
+      );
+
+      return data;
+    } catch (error) {
+      console.log("Adding review failed -> ", error);
+    }
   }
 
   /********* Fetch Servicer *********/

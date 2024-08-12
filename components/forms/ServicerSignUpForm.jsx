@@ -71,7 +71,7 @@ const ServicerSignUpForm = () => {
 
       if (!newServicerAccount) throw new Error();
 
-      const session = await appwriteService.login(email, password);
+      const session = await appwriteService.login({ email, password });
 
       console.log("session->", session);
       if (!session) {

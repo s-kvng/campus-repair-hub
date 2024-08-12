@@ -1,11 +1,26 @@
 "use client";
 import Head from "next/head";
 import { Button } from "@/components/ui/button";
+import appwriteService from "@/appwrite/config";
+import { useRouter } from "next/navigation";
 
 import { sidebarLinks } from "@/constants";
 import Link from "next/link";
 
 const LeftSidebar = () => {
+  const router = useRouter();
+  const handleSignOut = async () => {
+    try {
+      console.log("Sign out");
+      const logout = await appwriteService.logout();
+      if (!logout) throw new Error();
+
+      router.push("/servicer/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <nav className="leftsidebar">
       <div className="flex flex-col gap-11 text-white">

@@ -4,20 +4,27 @@ import { useUserContext } from "@/context/AuthContext";
 import React from "react";
 import { Tabs, Space } from "antd";
 import UserProfileTab from "@/components/ui/UserProfileTab";
+import PendingRequestTab from "@/components/ui/PendingRequestTab";
+import AcceptRequestTab from "@/components/ui/AcceptedRequestTab";
 
 const Profile = () => {
   const { user } = useUserContext();
-  console.log(user.repairer);
+  console.log(user.id);
   const tabItems = [
     {
       label: `Info`,
       key: `1`,
-      children: <UserProfileTab />,
+      children: <UserProfileTab user={user} />,
     },
     {
       label: `Pending Requests`,
       key: `2`,
-      children: `Content of Tab 2`,
+      children: <PendingRequestTab user={user} />,
+    },
+    {
+      label: `Accepted Requests`,
+      key: `3`,
+      children: <AcceptRequestTab user={user} />,
     },
   ];
 

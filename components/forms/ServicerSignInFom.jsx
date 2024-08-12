@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import appwriteService from "@/appwrite/config";
-import useAuth from "@/context/useAuth";
 import { useRouter } from "next/navigation";
 
 import { EyeFilledIcon } from "../icons/EyeFilledIcon";
@@ -16,10 +15,11 @@ import { Divider } from "@nextui-org/react";
 import { GoogleIcon } from "../icons/GoogleIcon";
 import { CircularProgress } from "@nextui-org/react";
 import { message } from "antd";
+import { useUserContext } from "@/context/AuthContext";
 
 const ServicerSignInForm = ({ className }) => {
   const router = useRouter();
-  const { setAuthStatus } = useAuth();
+  const { checkAuthUser } = useUserContext();
   const { register, handleSubmit } = useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
@@ -48,16 +48,20 @@ const ServicerSignInForm = ({ className }) => {
     try {
       const session = await appwriteService.login({ email, password });
       if (session) {
-        setAuthStatus(true);
-        setIsLoading(false);
-        message.success(`You successfully logged in`);
-        router.push("/dashboard");
+        const repairer = "repairer";
+        const isLoggedIn = await checkAuthUser(repairer);
+
+        if (isLoggedIn) {
+          message.success("You successfully logged in");
+          router.push("/dashboard");
+        }
       }
     } catch (error) {
       setError(error.message);
       console.log(error);
-      setIsLoading(false);
       message.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -70,16 +74,26 @@ const ServicerSignInForm = ({ className }) => {
             <img src="/favicon.ico" alt="Logo" />
           </span>
         </div>
-        <h2 className="text-center text-2xl font-bold leading-tight text-black">
-          Sign in to your account
+        <h2 className="text-center text-2xl font-bold leading-tight text-dark">
+          Sign Up for your Servicer account
         </h2>
-        <p className="mt-2 text-center text-base text-gray-600 mb-6">
-          Don&apos;t have any account?&nbsp;
+        <p className="mt-2 text-center text-base text-gray-600">
+          Don&apos;t have any servicer account?&nbsp;
           <Link
-            href="/servicer/signup"
+            href="/servicer/sign-up"
             className="font-medium text-primary transition-all duration-200 hover:underline"
           >
             Sign Up
+          </Link>
+        </p>
+
+        <p className="mt-1 text-center text-sm text-gray-600 mb-6">
+          Are you a client ?&nbsp;
+          <Link
+            href="/login"
+            className="font-medium text-primary transition-all duration-200 hover:underline"
+          >
+            Login
           </Link>
         </p>
 
@@ -104,6 +118,9 @@ const ServicerSignInForm = ({ className }) => {
                     variant="bordered"
                     label="Email"
                     isClearable
+                    classNames={{
+                      input: ["text-black/90", "placeholder:text-black/90"],
+                    }}
                     {...register("email", { required: true })}
                   />
                 </div>
@@ -116,6 +133,9 @@ const ServicerSignInForm = ({ className }) => {
                     onInvalid={isInvalid}
                     onValueChange={setValue}
                     color={isInvalid}
+                    classNames={{
+                      input: ["text-black/90", "placeholder:text-black/90"],
+                    }}
                     errorMessage={isInvalid && "Please enter a valid password"}
                     endContent={
                       <button
@@ -153,7 +173,7 @@ const ServicerSignInForm = ({ className }) => {
                 </Button>
               </div>
 
-              <div className="text-center w-full">
+              {/* <div className="text-center w-full">
                 <div className=" flex items-center mb-4">
                   <Divider className=" w-[40%]" />
                   <span className=" w-[20%]">OR</span>
@@ -165,7 +185,7 @@ const ServicerSignInForm = ({ className }) => {
                     <GoogleIcon />
                   </Link>
                 </div>
-              </div>
+              </div> */}
             </form>
           </>
         )}

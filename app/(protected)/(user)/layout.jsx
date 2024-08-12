@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -27,6 +27,7 @@ import appwriteService from "@/appwrite/config";
 const { Header, Content, Footer, Sider } = Layout;
 const UserLayout = ({ children }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [topServicers, setTopServicers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,9 +48,9 @@ const UserLayout = ({ children }) => {
     fetchRequest();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      const logout = appwriteService.logout();
+      const logout = await appwriteService.logout();
       if (!logout) throw new Error();
 
       router.push("/login");
@@ -57,6 +58,7 @@ const UserLayout = ({ children }) => {
       console.log(error);
     }
   };
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -110,13 +112,13 @@ const UserLayout = ({ children }) => {
             <p className="font-bold text-inherit">ACME</p>
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            <NavbarItem>
+            <NavbarItem isActive={pathname === "/explore"}>
               <Link color="foreground" href="/explore">
                 Explore
               </Link>
             </NavbarItem>
-            <NavbarItem isActive>
-              <Link href="/profile" aria-current="page">
+            <NavbarItem isActive={pathname === "/profile"}>
+              <Link color={"foreground"} href="/profile" aria-current="page">
                 Profile
               </Link>
             </NavbarItem>
