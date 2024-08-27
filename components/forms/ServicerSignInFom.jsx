@@ -41,6 +41,7 @@ const ServicerSignInForm = ({ className }) => {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const onSubmit = async (data) => {
+    setError("");
     console.log(data);
     setIsLoading(true);
     const { email, password } = data;

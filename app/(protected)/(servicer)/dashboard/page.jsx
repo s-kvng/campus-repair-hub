@@ -153,15 +153,15 @@ const Dashboard = () => {
               <p className="font-bold">Reviews</p>
               <Divider className="my-4" />
 
-              {reviews?.map((review, index) => (
-                <div key={index} className=" grid sm:grid-cols-2">
+              <div className=" grid sm:grid-cols-3 ">
+                {reviews?.map((review, index) => (
                   <ReviewCard
                     key={review?.id}
                     isLoading={fetchLoading}
                     review={review}
                   />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </>
