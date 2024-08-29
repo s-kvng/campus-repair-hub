@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Input } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
+import { message } from "antd";
 
 import { EyeFilledIcon } from "../icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../icons/EyeSlashFilledIcon";
@@ -26,7 +27,15 @@ const UpdateUserProfileCard = () => {
     handleSubmit: secondHandleSubmit,
     formState: { errors: secondErrors },
   } = useForm();
+
+  const {
+    register: bioRegister,
+    handleSubmit: bioHandleSubmit,
+    formState: { errors: bioErrors },
+  } = useForm();
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
   const [firstName, setFirstName] = useState(user.firstname);
   const [lastName, setLastName] = useState(user.lastname);
   const [bio, setBio] = useState(user.bio);
@@ -69,8 +78,39 @@ const UpdateUserProfileCard = () => {
     }
   };
 
-  const onSubmit2 = async (data) => {
+  // sumbit new password
+  const passwordSubmit = async (data) => {
     console.log("submit2 -> ", data);
+    setIsPasswordLoading(true);
+    try {
+      const user = appwriteService.updatePassword(data.password);
+      if (!user) {
+        message.error("Not updated");
+        return;
+      }
+      if (user) {
+        message.success("Updated password");
+      }
+    } catch (error) {
+      console.log("Password error -> ", error);
+    } finally {
+      setIsPasswordLoading(false);
+    }
+  };
+
+  // bio submit
+  const bioSubmit = async (data) => {
+    console.log("bio -> ", data);
+    // setIsLoading(true);
+    // try {
+    //   const response = await appwriteService.updateProfileCard2(user.id, data.bio);
+    //   if (!response) console.log("not updated");
+    //   if (response) console.log(response);
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
@@ -151,8 +191,8 @@ const UpdateUserProfileCard = () => {
         {/* second card */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-3">Update Password</h2>
-          <form className=" z-20" onSubmit={secondHandleSubmit(onSubmit2)}>
-            {errors.password && (
+          <form className=" z-20" onSubmit={secondHandleSubmit(passwordSubmit)}>
+            {secondErrors.password && (
               <span className=" text-red-500">Password is invalid</span>
             )}
             <div className=" flex items-center gap-x-5">
@@ -191,18 +231,18 @@ const UpdateUserProfileCard = () => {
                 variant="primary"
                 size="sm"
                 className="w-20 font-semibold text-md cursor-pointer disabled:cursor-wait"
-                disabled={value.length <= 0}
+                disabled={(value.length <= 7) | isPasswordLoading}
                 // onClick={onSubmit}
               >
                 {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-                Save
+                {isPasswordLoading ? <CircularProgress size="16" /> : "Save"}
               </Button>
             </div>
           </form>
 
           {/*  */}
           <h2 className="text-xl font-semibold mb-1">Bio</h2>
-          <form className=" z-20" onSubmit={secondHandleSubmit(onSubmit)}>
+          <form className=" z-20" onSubmit={bioHandleSubmit(bioSubmit)}>
             <div className="">
               <Textarea
                 label="Bio"
@@ -216,7 +256,7 @@ const UpdateUserProfileCard = () => {
                   base: "max-w-full",
                   input: "resize-y min-h-[40px]",
                 }}
-                {...secondRegister("bio")}
+                {...bioRegister("bio")}
               />
 
               <div className=" flex justify-end mt-2">

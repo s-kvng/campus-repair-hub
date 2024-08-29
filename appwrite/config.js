@@ -197,6 +197,20 @@ export class AppwriteService {
     }
   }
 
+  // update password
+  async updatePassword(newPassword) {
+    try {
+      const result = await account.updatePassword(
+        newPassword // password
+      );
+      // await account.updatePassword(userId, oldPassword, newPassword);
+      if (result) console.log(result);
+    } catch (error) {
+      console.log("update password error -> ", error);
+      return false;
+    }
+  }
+
   /***** Requests  ******/
 
   async createRequest({ servicerId, userId, category, location, description }) {
