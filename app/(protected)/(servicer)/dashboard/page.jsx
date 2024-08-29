@@ -153,7 +153,7 @@ const Dashboard = () => {
               <p className="font-bold">Reviews</p>
               <Divider className="my-4" />
 
-              <div className=" grid sm:grid-cols-3 ">
+              <div className=" grid sm:grid-cols-3">
                 {reviews?.map((review, index) => (
                   <ReviewCard
                     key={review?.id}

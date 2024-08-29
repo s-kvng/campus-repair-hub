@@ -177,6 +177,26 @@ export class AppwriteService {
     }
   }
 
+  // Update profile card 1
+  async updateProfileCard1(userId, firstname, lastname) {
+    try {
+      const result = await databases.updateDocument(
+        conf.databaseId, // databaseId
+        conf.serviceUsersCollectionId, // collectionId
+        userId, // documentId
+        {
+          firstname: firstname,
+          lastname: lastname,
+        } // data (optional)
+      );
+
+      return result;
+    } catch (error) {
+      console.log("update profile card 1 error -> ", error);
+      return null;
+    }
+  }
+
   /***** Requests  ******/
 
   async createRequest({ servicerId, userId, category, location, description }) {

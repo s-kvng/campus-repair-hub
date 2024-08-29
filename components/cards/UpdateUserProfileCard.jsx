@@ -9,16 +9,27 @@ import { Textarea } from "@nextui-org/react";
 
 import { EyeFilledIcon } from "../icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../icons/EyeSlashFilledIcon";
+import { useUserContext } from "@/context/AuthContext";
+import appwriteService from "@/appwrite/config";
 
 const UpdateUserProfileCard = () => {
+  const { user, isLoading: userLoading } = useUserContext();
+  console.log(user);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const {
+    register: secondRegister,
+    handleSubmit: secondHandleSubmit,
+    formState: { errors: secondErrors },
+  } = useForm();
   const [isLoading, setIsLoading] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState(user.firstname);
+  const [lastName, setLastName] = useState(user.lastname);
+  const [bio, setBio] = useState(user.bio);
   const [error, setError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
@@ -39,23 +50,27 @@ const UpdateUserProfileCard = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    // setIsLoading(true);
-    // const { email, password } = data;
+    console.log(user.id);
+    setIsLoading(true);
+    try {
+      const response = await appwriteService.updateProfileCard1(
+        user.id,
+        data.firstname,
+        data.lastname
+      );
 
-    // try {
-    //   const session = await appwriteService.login({ email, password });
-    //   if (session) {
-    //     setAuthStatus(true);
-    //     setIsLoading(false);
-    //     message.success(`You successfully logged in`);
-    //     router.push("/dashboard");
-    //   }
-    // } catch (error) {
-    //   setError(error.message);
-    //   console.log(error);
-    //   setIsLoading(false);
-    //   message.error("Something went wrong");
-    // }
+      if (!response) console.log("not updated");
+
+      if (response) console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmit2 = async (data) => {
+    console.log("submit2 -> ", data);
   };
 
   return (
@@ -136,7 +151,7 @@ const UpdateUserProfileCard = () => {
         {/* second card */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-3">Update Password</h2>
-          <form className=" z-20" onSubmit={handleSubmit(onSubmit)}>
+          <form className=" z-20" onSubmit={secondHandleSubmit(onSubmit2)}>
             {errors.password && (
               <span className=" text-red-500">Password is invalid</span>
             )}
@@ -165,7 +180,7 @@ const UpdateUserProfileCard = () => {
                 }
                 type={isVisible ? "text" : "password"}
                 className=""
-                {...register("password", {
+                {...secondRegister("password", {
                   required: true,
                   pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i,
                   minLength: 8,
@@ -187,11 +202,13 @@ const UpdateUserProfileCard = () => {
 
           {/*  */}
           <h2 className="text-xl font-semibold mb-1">Bio</h2>
-          <form className=" z-20" onSubmit={handleSubmit(onSubmit)}>
+          <form className=" z-20" onSubmit={secondHandleSubmit(onSubmit)}>
             <div className="">
               <Textarea
                 label="Bio"
                 variant="bordered"
+                value={bio}
+                onValueChange={setBio}
                 placeholder="Enter your description"
                 disableAnimation
                 disableAutosize
@@ -199,7 +216,7 @@ const UpdateUserProfileCard = () => {
                   base: "max-w-full",
                   input: "resize-y min-h-[40px]",
                 }}
-                {...register("bio")}
+                {...secondRegister("bio")}
               />
 
               <div className=" flex justify-end mt-2">
