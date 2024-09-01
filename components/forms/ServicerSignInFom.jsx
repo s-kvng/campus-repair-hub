@@ -41,6 +41,7 @@ const ServicerSignInForm = ({ className }) => {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const onSubmit = async (data) => {
+    setError("");
     console.log(data);
     setIsLoading(true);
     const { email, password } = data;
@@ -52,7 +53,7 @@ const ServicerSignInForm = ({ className }) => {
         const isLoggedIn = await checkAuthUser(repairer);
 
         if (isLoggedIn) {
-          message.success("You successfully logged in");
+          message.success(`You successfully logged in, Redirecting...`);
           router.push("/dashboard");
         }
       }

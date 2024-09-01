@@ -5,50 +5,95 @@ import { CircularProgress } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Input } from "@nextui-org/react";
+import appwriteService from "@/appwrite/config";
+import { message } from "antd";
 
 import { Select, SelectItem } from "@nextui-org/react";
 import { availability, categories } from "@/constants/data";
 
+import { useUserContext } from "@/context/AuthContext";
+
 const UpdateWorkProfileCard = () => {
+  const { user, isLoading: userLoading } = useUserContext();
+
+  let arr = [];
+  if (user.category) {
+    const str = user.category;
+    arr = str.split(",");
+  }
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [categoriesValue, setCategories] = useState(
-    new Set(["electrical appliance"])
+  // second card
+  const {
+    register: secondRegister,
+    handleSubmit: secondHandleSubmit,
+    formState: { errors: secondErrors },
+  } = useForm();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [secondLoading, setSecondLoading] = useState(false);
+  const [phone, setPhone] = useState(user.phone);
+  const [address, setAddress] = useState(user.address);
+  const [categoriesValue, setCategories] = useState(new Set(arr));
+  const [availabilityValue, setAvailability] = useState(
+    new Set([user.availability])
   );
-  const [availabilityValue, setAvailability] = useState(new Set(["available"]));
 
   //
   const onSubmit = async (data) => {
     console.log(data);
-    // setIsLoading(true);
-    // const { email, password } = data;
+    const phone = Number(data.contact);
+    setIsLoading(true);
+    try {
+      const response = await appwriteService.updateWorkCard1(
+        user.id,
+        phone,
+        data.address
+      );
 
-    // try {
-    //   const session = await appwriteService.login({ email, password });
-    //   if (session) {
-    //     setAuthStatus(true);
-    //     setIsLoading(false);
-    //     message.success(`You successfully logged in`);
-    //     router.push("/dashboard");
-    //   }
-    // } catch (error) {
-    //   setError(error.message);
-    //   console.log(error);
-    //   setIsLoading(false);
-    //   message.error("Something went wrong");
-    // }
+      if (!response) {
+        message.error("not updated");
+        return;
+      }
+
+      if (response) {
+        message.success("Updated successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   //
-  const handleCatAvaSubmit = async () => {
-    console.log(categoriesValue);
-    console.log(availabilityValue);
+  const handleCatAvaSubmit = async (data) => {
+    console.log(data);
+    setSecondLoading(true);
+    try {
+      const response = await appwriteService.updateWorkCard2(
+        user.id,
+        data.categories,
+        data.availability
+      );
+
+      if (!response) {
+        message.error("not updated");
+        return;
+      }
+
+      if (response) {
+        message.success("Updated successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSecondLoading(false);
+    }
   };
 
   return (
@@ -99,18 +144,21 @@ const UpdateWorkProfileCard = () => {
               variant="primary"
               size="sm"
               className="w-20 font-semibold text-md cursor-pointer disabled:cursor-wait"
-              disabled={phone.length <= 0 || address.length <= 0}
+              disabled={phone.length <= 0 || address.length <= 0 || isLoading}
               // onClick={onSubmit}
             >
               {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-              Save
+              {isLoading ? <CircularProgress size="12" /> : "Save"}
             </Button>
           </form>
         </div>
 
         {/* 2nd card for categories and availability */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <form className=" z-20" onSubmit={handleCatAvaSubmit}>
+          <form
+            className=" z-20"
+            onSubmit={secondHandleSubmit(handleCatAvaSubmit)}
+          >
             <div className=" space-y-5 mb-3">
               <div className="flex w-full  flex-col gap-2 mb-3">
                 <Select
@@ -121,7 +169,7 @@ const UpdateWorkProfileCard = () => {
                   size="sm"
                   className="max-w-full"
                   onSelectionChange={setCategories}
-                  {...register("categories", { required: true })}
+                  {...secondRegister("categories", { required: true })}
                 >
                   {categories.map((category) => (
                     <SelectItem key={category.value} value={category.value}>
@@ -142,7 +190,7 @@ const UpdateWorkProfileCard = () => {
                   label="Select Availability"
                   size="sm"
                   className="max-w-full"
-                  {...register("availability", { required: true })}
+                  {...secondRegister("availability", { required: true })}
                 >
                   {availability.map((available) => (
                     <SelectItem key={available.value} value={available.value}>
@@ -157,10 +205,11 @@ const UpdateWorkProfileCard = () => {
               variant="primary"
               size="sm"
               className="w-20 font-semibold text-md cursor-pointer disabled:cursor-wait"
+              disabled={secondLoading}
               // onClick={onSubmit}
             >
               {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-              Update
+              {secondLoading ? <CircularProgress size="12" /> : "Update"}
             </Button>
           </form>
         </div>

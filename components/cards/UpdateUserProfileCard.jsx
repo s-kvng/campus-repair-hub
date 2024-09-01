@@ -6,19 +6,40 @@ import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Input } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
+import { message } from "antd";
 
 import { EyeFilledIcon } from "../icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../icons/EyeSlashFilledIcon";
+import { useUserContext } from "@/context/AuthContext";
+import appwriteService from "@/appwrite/config";
 
 const UpdateUserProfileCard = () => {
+  const { user, isLoading: userLoading } = useUserContext();
+  console.log(user);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const {
+    register: secondRegister,
+    handleSubmit: secondHandleSubmit,
+    formState: { errors: secondErrors },
+  } = useForm();
+
+  const {
+    register: bioRegister,
+    handleSubmit: bioHandleSubmit,
+    formState: { errors: bioErrors },
+  } = useForm();
+
   const [isLoading, setIsLoading] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+  const [isBioLoading, setIsBioLoading] = useState(false);
+  const [firstName, setFirstName] = useState(user.firstname);
+  const [lastName, setLastName] = useState(user.lastname);
+  const [bio, setBio] = useState(user.bio);
   const [error, setError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState("");
@@ -39,23 +60,66 @@ const UpdateUserProfileCard = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    // setIsLoading(true);
-    // const { email, password } = data;
+    console.log(user.id);
+    setIsLoading(true);
+    try {
+      const response = await appwriteService.updateProfileCard1(
+        user.id,
+        data.firstname,
+        data.lastname
+      );
 
-    // try {
-    //   const session = await appwriteService.login({ email, password });
-    //   if (session) {
-    //     setAuthStatus(true);
-    //     setIsLoading(false);
-    //     message.success(`You successfully logged in`);
-    //     router.push("/dashboard");
-    //   }
-    // } catch (error) {
-    //   setError(error.message);
-    //   console.log(error);
-    //   setIsLoading(false);
-    //   message.error("Something went wrong");
-    // }
+      if (!response) console.log("not updated");
+
+      if (response) console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // sumbit new password
+  const passwordSubmit = async (data) => {
+    console.log("submit2 -> ", data);
+    setIsPasswordLoading(true);
+    try {
+      const user = appwriteService.updatePassword(data.password);
+      if (!user) {
+        message.error("Not updated");
+        return;
+      }
+      if (user) {
+        message.success("Updated password");
+      }
+    } catch (error) {
+      console.log("Password error -> ", error);
+    } finally {
+      setIsPasswordLoading(false);
+    }
+  };
+
+  // bio submit
+  const bioSubmit = async (data) => {
+    console.log("bio -> ", data);
+    setIsBioLoading(true);
+    try {
+      const response = await appwriteService.updateBio(user.id, data.bio);
+      if (!response) {
+        message.error("Not updated");
+        return;
+      }
+      if (response) {
+        message.success("Updated Bio");
+        console.log(response);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Ooops!!! Something went wrong");
+    } finally {
+      setIsBioLoading(false);
+    }
   };
 
   return (
@@ -136,8 +200,8 @@ const UpdateUserProfileCard = () => {
         {/* second card */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-3">Update Password</h2>
-          <form className=" z-20" onSubmit={handleSubmit(onSubmit)}>
-            {errors.password && (
+          <form className=" z-20" onSubmit={secondHandleSubmit(passwordSubmit)}>
+            {secondErrors.password && (
               <span className=" text-red-500">Password is invalid</span>
             )}
             <div className=" flex items-center gap-x-5">
@@ -165,7 +229,7 @@ const UpdateUserProfileCard = () => {
                 }
                 type={isVisible ? "text" : "password"}
                 className=""
-                {...register("password", {
+                {...secondRegister("password", {
                   required: true,
                   pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i,
                   minLength: 8,
@@ -176,22 +240,24 @@ const UpdateUserProfileCard = () => {
                 variant="primary"
                 size="sm"
                 className="w-20 font-semibold text-md cursor-pointer disabled:cursor-wait"
-                disabled={value.length <= 0}
+                disabled={(value.length <= 7) | isPasswordLoading}
                 // onClick={onSubmit}
               >
                 {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-                Save
+                {isPasswordLoading ? <CircularProgress size="12" /> : "Save"}
               </Button>
             </div>
           </form>
 
           {/*  */}
           <h2 className="text-xl font-semibold mb-1">Bio</h2>
-          <form className=" z-20" onSubmit={handleSubmit(onSubmit)}>
+          <form className=" z-20" onSubmit={bioHandleSubmit(bioSubmit)}>
             <div className="">
               <Textarea
                 label="Bio"
                 variant="bordered"
+                value={bio}
+                onValueChange={setBio}
                 placeholder="Enter your description"
                 disableAnimation
                 disableAutosize
@@ -199,7 +265,7 @@ const UpdateUserProfileCard = () => {
                   base: "max-w-full",
                   input: "resize-y min-h-[40px]",
                 }}
-                {...register("bio")}
+                {...bioRegister("bio")}
               />
 
               <div className=" flex justify-end mt-2">
@@ -207,11 +273,11 @@ const UpdateUserProfileCard = () => {
                   variant="primary"
                   size="sm"
                   className="w-20 font-semibold text-md cursor-pointer disabled:cursor-wait "
-                  disabled
+                  disabled={isBioLoading}
                   // onClick={onSubmit}
                 >
                   {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-                  Update
+                  {isBioLoading ? <CircularProgress size="12" /> : "Update"}
                 </Button>
               </div>
             </div>
