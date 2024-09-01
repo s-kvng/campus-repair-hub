@@ -230,6 +230,26 @@ export class AppwriteService {
     }
   }
 
+  // Update work profile card 1
+  async updateWorkCard1(userId, contact, address) {
+    try {
+      const result = await databases.updateDocument(
+        conf.databaseId, // databaseId
+        conf.serviceUsersCollectionId, // collectionId
+        userId, // documentId
+        {
+          phone: contact,
+          address: address,
+        } // data (optional)
+      );
+
+      return result;
+    } catch (error) {
+      console.log("update work card 1 error -> ", error);
+      return null;
+    }
+  }
+
   /***** Requests  ******/
 
   async createRequest({ servicerId, userId, category, location, description }) {
