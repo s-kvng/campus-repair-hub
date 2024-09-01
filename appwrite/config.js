@@ -211,6 +211,25 @@ export class AppwriteService {
     }
   }
 
+  // update bio
+  async updateBio(userId, bio) {
+    try {
+      const result = await databases.updateDocument(
+        conf.databaseId, // databaseId
+        conf.serviceUsersCollectionId, // collectionId
+        userId, // documentId
+        {
+          bio: bio,
+        } // data (optional)
+      );
+
+      return result;
+    } catch (error) {
+      console.log("update bio error -> ", error);
+      return null;
+    }
+  }
+
   /***** Requests  ******/
 
   async createRequest({ servicerId, userId, category, location, description }) {

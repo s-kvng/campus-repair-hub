@@ -36,6 +36,7 @@ const UpdateUserProfileCard = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+  const [isBioLoading, setIsBioLoading] = useState(false);
   const [firstName, setFirstName] = useState(user.firstname);
   const [lastName, setLastName] = useState(user.lastname);
   const [bio, setBio] = useState(user.bio);
@@ -101,16 +102,24 @@ const UpdateUserProfileCard = () => {
   // bio submit
   const bioSubmit = async (data) => {
     console.log("bio -> ", data);
-    // setIsLoading(true);
-    // try {
-    //   const response = await appwriteService.updateProfileCard2(user.id, data.bio);
-    //   if (!response) console.log("not updated");
-    //   if (response) console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    setIsBioLoading(true);
+    try {
+      const response = await appwriteService.updateBio(user.id, data.bio);
+      if (!response) {
+        message.error("Not updated");
+        return;
+      }
+      if (response) {
+        message.success("Updated Bio");
+        console.log(response);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Ooops!!! Something went wrong");
+    } finally {
+      setIsBioLoading(false);
+    }
   };
 
   return (
@@ -235,7 +244,7 @@ const UpdateUserProfileCard = () => {
                 // onClick={onSubmit}
               >
                 {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-                {isPasswordLoading ? <CircularProgress size="16" /> : "Save"}
+                {isPasswordLoading ? <CircularProgress size="12" /> : "Save"}
               </Button>
             </div>
           </form>
@@ -264,11 +273,11 @@ const UpdateUserProfileCard = () => {
                   variant="primary"
                   size="sm"
                   className="w-20 font-semibold text-md cursor-pointer disabled:cursor-wait "
-                  disabled
+                  disabled={isBioLoading}
                   // onClick={onSubmit}
                 >
                   {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-                  Update
+                  {isBioLoading ? <CircularProgress size="12" /> : "Update"}
                 </Button>
               </div>
             </div>

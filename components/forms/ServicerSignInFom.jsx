@@ -53,7 +53,7 @@ const ServicerSignInForm = ({ className }) => {
         const isLoggedIn = await checkAuthUser(repairer);
 
         if (isLoggedIn) {
-          message.success("You successfully logged in");
+          message.success(`You successfully logged in, Redirecting...`);
           router.push("/dashboard");
         }
       }

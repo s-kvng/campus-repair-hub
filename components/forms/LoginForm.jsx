@@ -53,11 +53,12 @@ const LoginForm = ({ className }) => {
       }
 
       if (session) {
+        setError("");
         const repairer = "user";
         const isLoggedIn = await checkAuthUser(repairer);
 
         if (isLoggedIn) {
-          message.success(`You successfully logged in`);
+          message.success(`You successfully logged in, Redirecting...`);
           router.push("/explore");
         }
       }
