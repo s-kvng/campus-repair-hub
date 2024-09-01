@@ -250,6 +250,26 @@ export class AppwriteService {
     }
   }
 
+  // update work card 2
+  async updateWorkCard2(userId, category, availability) {
+    try {
+      const result = await databases.updateDocument(
+        conf.databaseId, // databaseId
+        conf.serviceUsersCollectionId, // collectionId
+        userId, // documentId
+        {
+          category: category,
+          availability: availability,
+        } // data (optional)
+      );
+
+      return result;
+    } catch (error) {
+      console.log("update work card 1 error -> ", error);
+      return null;
+    }
+  }
+
   /***** Requests  ******/
 
   async createRequest({ servicerId, userId, category, location, description }) {

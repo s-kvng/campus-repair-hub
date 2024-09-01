@@ -35,6 +35,7 @@ const UpdateWorkProfileCard = () => {
   } = useForm();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [secondLoading, setSecondLoading] = useState(false);
   const [phone, setPhone] = useState(user.phone);
   const [address, setAddress] = useState(user.address);
   const [categoriesValue, setCategories] = useState(new Set(arr));
@@ -72,6 +73,27 @@ const UpdateWorkProfileCard = () => {
   //
   const handleCatAvaSubmit = async (data) => {
     console.log(data);
+    setSecondLoading(true);
+    try {
+      const response = await appwriteService.updateWorkCard2(
+        user.id,
+        data.categories,
+        data.availability
+      );
+
+      if (!response) {
+        message.error("not updated");
+        return;
+      }
+
+      if (response) {
+        message.success("Updated successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSecondLoading(false);
+    }
   };
 
   return (
@@ -183,10 +205,11 @@ const UpdateWorkProfileCard = () => {
               variant="primary"
               size="sm"
               className="w-20 font-semibold text-md cursor-pointer disabled:cursor-wait"
+              disabled={secondLoading}
               // onClick={onSubmit}
             >
               {/* <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> */}
-              Update
+              {secondLoading ? <CircularProgress size="12" /> : "Update"}
             </Button>
           </form>
         </div>
