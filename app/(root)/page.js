@@ -33,7 +33,7 @@ export default function Home() {
                 ) : (
                     <Login />
                 )} */}
-          <LoginForm className="bg-gray-200/60" />
+          <LoginForm className="bg-gray-500/60" />
         </div>
       </div>
     </main>

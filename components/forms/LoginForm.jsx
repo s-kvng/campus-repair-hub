@@ -57,6 +57,12 @@ const LoginForm = ({ className }) => {
         const repairer = "user";
         const isLoggedIn = await checkAuthUser(repairer);
 
+        if (!isLoggedIn) {
+          message.success(
+            `User is logged in but user is a servicer, Click on the login link to redirect`
+          );
+        }
+
         if (isLoggedIn) {
           message.success(`You successfully logged in, Redirecting...`);
           router.push("/explore");

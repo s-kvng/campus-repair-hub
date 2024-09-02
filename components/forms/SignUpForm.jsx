@@ -141,6 +141,9 @@ const SignUpForm = () => {
                   size="sm"
                   label="First Name"
                   isClearable
+                  classNames={{
+                    input: ["text-white/90", "placeholder:text-white/90"],
+                  }}
                   {...register("firstname", { required: true })}
                 />
                 {errors.firstname && (
@@ -155,6 +158,9 @@ const SignUpForm = () => {
                   variant="bordered"
                   size="sm"
                   label="Last Name"
+                  classNames={{
+                    input: ["text-white/90", "placeholder:text-white/90"],
+                  }}
                   isClearable
                   {...register("lastname", { required: true })}
                 />
@@ -170,6 +176,9 @@ const SignUpForm = () => {
                   variant="bordered"
                   size="sm"
                   label="Email"
+                  classNames={{
+                    input: ["text-white/90", "placeholder:text-white/90"],
+                  }}
                   isClearable
                   {...register("email", { required: true })}
                 />
@@ -187,6 +196,9 @@ const SignUpForm = () => {
                   onInvalid={isInvalid}
                   onValueChange={setValue}
                   color={isInvalid}
+                  classNames={{
+                    input: ["text-white/90", "placeholder:text-white/90"],
+                  }}
                   errorMessage={isInvalid && "Please enter a valid password"}
                   endContent={
                     <button
@@ -230,15 +242,15 @@ const SignUpForm = () => {
             <div className="text-center w-full">
               <div className=" flex items-center mb-4">
                 <Divider className=" w-[40%]" />
-                <span className=" w-[20%]">OR</span>
-                <Divider className=" w-[40%]" />
+                {/* <span className=" w-[20%]">OR</span>
+                <Divider className=" w-[40%]" /> */}
               </div>
 
-              <div className=" flex justify-center">
+              {/* <div className=" flex justify-center">
                 <Link href={"/"}>
                   <GoogleIcon />
                 </Link>
-              </div>
+              </div> */}
             </div>
           </form>
         )}
