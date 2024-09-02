@@ -72,7 +72,13 @@ const UpdateWorkProfileCard = () => {
 
   //
   const handleCatAvaSubmit = async (data) => {
-    const category = data.categories.join(",");
+    let category;
+    console.log(typeof data.categories);
+    if (typeof data.categories === "string") {
+      category = data.categories;
+    } else {
+      category = data.categories.join(",");
+    }
     console.log(category);
     setSecondLoading(true);
     try {
