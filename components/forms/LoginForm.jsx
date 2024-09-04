@@ -130,7 +130,8 @@ const LoginForm = ({ className }) => {
                     variant="bordered"
                     label="Email"
                     classNames={{
-                      input: ["text-white/90", "placeholder:text-white/90"],
+                      input: ["text-white", "placeholder:text-white/90"],
+                      label: ["text-white"],
                     }}
                     isClearable
                     {...register("email", { required: true })}
@@ -146,7 +147,8 @@ const LoginForm = ({ className }) => {
                     onValueChange={setValue}
                     color={isInvalid}
                     classNames={{
-                      input: ["text-white/90", "placeholder:text-white/90"],
+                      input: ["text-white", "placeholder:text-white/90"],
+                      label: ["text-white"],
                     }}
                     errorMessage={isInvalid && "Please enter a valid password"}
                     endContent={
