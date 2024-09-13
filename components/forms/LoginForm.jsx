@@ -83,8 +83,8 @@ const LoginForm = ({ className }) => {
         className={`mx-auto w-full max-w-lg  rounded-xl py-10 px-5 sm:p-10  ${className}`}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[60px]">
-            <img src="/favicon.ico" alt="Logo" />
+          <span className="inline-block w-full max-w-[100px]">
+            <img src="assets/crh2-transformed.png" alt="Logo" />
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight text-white">

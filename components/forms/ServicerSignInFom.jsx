@@ -71,12 +71,12 @@ const ServicerSignInForm = ({ className }) => {
         className={`mx-auto w-full max-w-lg  rounded-xl py-10 px-5 sm:p-10  ${className}`}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[60px]">
-            <img src="/favicon.ico" alt="Logo" />
+          <span className="inline-block w-full max-w-[120px]">
+            <img src="/assets/crh1-transformed.png" alt="Logo" />
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight text-dark">
-          Sign Up for your Servicer account
+          Sign In for your Servicer account
         </h2>
         <p className="mt-2 text-center text-base text-gray-600">
           Don&apos;t have any servicer account?&nbsp;

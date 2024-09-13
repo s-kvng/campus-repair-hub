@@ -98,8 +98,8 @@ const SignUpForm = () => {
         className={`mx-auto w-full max-w-lg bg-black rounded-xl py-10 px-4 sm:p-10 `}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[60px]">
-            <img src="/favicon.ico" alt="Logo" />
+          <span className="inline-block w-full max-w-[120px]">
+            <img src="/assets/crh2-transformed.png" alt="Logo" />
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight text-white">

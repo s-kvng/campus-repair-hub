@@ -83,7 +83,9 @@ const ServicerSignUpForm = () => {
       const isLoggedIn = await checkAuthUser(repairer);
       console.log(isLoggedIn);
       if (isLoggedIn) {
-        message.success(`Your account has been created, Mr. ${firstname}`);
+        message.success(
+          `Your account has been created, Mr. ${firstname}. Redirecting...`
+        );
         router.push("/dashboard");
       }
     } catch (error) {

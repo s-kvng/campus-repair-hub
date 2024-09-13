@@ -88,7 +88,7 @@ const UserLayout = ({ children }) => {
                 >
                   <Avatar size="md" showFallback src={service.image} />
                   <div>
-                    <Link href="#">
+                    <Link href={`profile/${service?.$id}`}>
                       <p className="text-white">{service.firstname}</p>
                     </Link>
                     <p className="text-[11px] text-slate-400">
@@ -109,7 +109,11 @@ const UserLayout = ({ children }) => {
       >
         <Navbar>
           <NavbarBrand>
-            <p className="font-bold text-inherit">ACME</p>
+            <img
+              className=" w-20 h-14"
+              src="assets/crh2-transformed.png"
+              alt="image"
+            />
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
             <NavbarItem isActive={pathname === "/explore"}>

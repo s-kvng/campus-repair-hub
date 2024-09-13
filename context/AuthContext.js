@@ -28,13 +28,13 @@ const AuthContext = createContext(INITIAL_STATE);
 export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [user, setUser] = useState(INITIAL_USER);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const checkAuthUser = async (role) => {
     let currentAccount;
     let currentServiceAccount;
-    setIsLoading(true);
+
     try {
       if (role === "repairer") {
         currentServiceAccount = await appwriteService.getCurrentServiceUser();
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       if (currentServiceAccount) {
-        console.log("Current service account");
+        console.log("Current service account", isLoading);
         console.log(currentServiceAccount);
         setUser({
           id: currentServiceAccount.$id,
