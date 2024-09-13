@@ -252,6 +252,7 @@ export class AppwriteService {
 
   // update work card 2
   async updateWorkCard2(userId, category, availability) {
+    console.log("category", category);
     try {
       const result = await databases.updateDocument(
         conf.databaseId, // databaseId
@@ -265,7 +266,7 @@ export class AppwriteService {
 
       return result;
     } catch (error) {
-      console.log("update work card 1 error -> ", error);
+      console.log("update work card 2 error -> ", error);
       return null;
     }
   }

@@ -72,12 +72,19 @@ const UpdateWorkProfileCard = () => {
 
   //
   const handleCatAvaSubmit = async (data) => {
-    console.log(data);
+    let category;
+    console.log(typeof data.categories);
+    if (typeof data.categories === "string") {
+      category = data.categories;
+    } else {
+      category = data.categories.join(",");
+    }
+    console.log(category);
     setSecondLoading(true);
     try {
       const response = await appwriteService.updateWorkCard2(
         user.id,
-        data.categories,
+        category,
         data.availability
       );
 

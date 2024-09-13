@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import {
   EnvironmentTwoTone,
@@ -19,10 +20,16 @@ import ReviewCard from "@/components/cards/ReviewCard";
 
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
+  const router = useRouter();
   const [fetchLoading, setFetchLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+    console.log("role -> ", user.repairer, user.id);
+    console.log("loading... ", isLoading);
+    if (!isLoading && !user.repairer) {
+      router.replace("/explore");
+    }
     setFetchLoading(true);
     const fetchRequest = async () => {
       try {
@@ -37,7 +44,7 @@ const Dashboard = () => {
     };
 
     fetchRequest();
-  }, [user.id]);
+  }, [user.id, user.repairer]);
 
   const defaultContent =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
@@ -166,7 +173,9 @@ const Dashboard = () => {
           </div>
         </>
       )}
-      <div className="text-center text-slate-400">Powered by Pycode</div>
+      <div className="text-center text-slate-400">
+        For IT support contact : 0206646446
+      </div>
     </div>
   );
 };

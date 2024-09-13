@@ -69,11 +69,17 @@ const UpdateUserProfileCard = () => {
         data.lastname
       );
 
-      if (!response) console.log("not updated");
+      if (!response) {
+        message.error("Not updated");
+        return;
+      }
 
-      if (response) console.log(response);
+      if (response) {
+        message.success("Updated successfully");
+      }
     } catch (error) {
       console.log(error);
+      message.error("Error updating");
     } finally {
       setIsLoading(false);
     }

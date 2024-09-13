@@ -8,7 +8,7 @@ export default function Home() {
         <div className="w-full sm:w-1/2 px-2 flex justify-center flex-wrap items-center">
           <div className="relative text-center w-full flex justify-center flex-wrap">
             <div className="w-full max-w-[100px] mb-8">
-              <img src="/favicon.ico" alt="Logo" />
+              <img src="assets/crh1-tranformed.png" alt="Logo" />
             </div>
             <div className="w-full">
               <h1 className="font-bold text-3xl mb-4">
@@ -33,7 +33,7 @@ export default function Home() {
                 ) : (
                     <Login />
                 )} */}
-          <LoginForm className="bg-gray-200/60" />
+          <LoginForm className="bg-gray-500/60" />
         </div>
       </div>
     </main>

@@ -57,6 +57,12 @@ const LoginForm = ({ className }) => {
         const repairer = "user";
         const isLoggedIn = await checkAuthUser(repairer);
 
+        if (!isLoggedIn) {
+          message.success(
+            `User is logged in but user is a servicer, Click on the login link to redirect`
+          );
+        }
+
         if (isLoggedIn) {
           message.success(`You successfully logged in, Redirecting...`);
           router.push("/explore");
@@ -77,8 +83,8 @@ const LoginForm = ({ className }) => {
         className={`mx-auto w-full max-w-lg  rounded-xl py-10 px-5 sm:p-10  ${className}`}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[60px]">
-            <img src="/favicon.ico" alt="Logo" />
+          <span className="inline-block w-full max-w-[100px]">
+            <img src="assets/crh2-transformed.png" alt="Logo" />
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight text-white">
@@ -124,7 +130,8 @@ const LoginForm = ({ className }) => {
                     variant="bordered"
                     label="Email"
                     classNames={{
-                      input: ["text-white/90", "placeholder:text-white/90"],
+                      input: ["text-white", "placeholder:text-white/90"],
+                      label: ["text-white"],
                     }}
                     isClearable
                     {...register("email", { required: true })}
@@ -140,7 +147,8 @@ const LoginForm = ({ className }) => {
                     onValueChange={setValue}
                     color={isInvalid}
                     classNames={{
-                      input: ["text-white/90", "placeholder:text-white/90"],
+                      input: ["text-white", "placeholder:text-white/90"],
+                      label: ["text-white"],
                     }}
                     errorMessage={isInvalid && "Please enter a valid password"}
                     endContent={

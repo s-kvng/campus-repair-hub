@@ -46,6 +46,7 @@ const SignUpForm = () => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setError("");
     const { firstname, lastname, email, password } = data;
     console.log(data);
     const name = `${firstname} ${lastname}`;
@@ -75,7 +76,9 @@ const SignUpForm = () => {
 
       const isLoggedIn = await checkAuthUser("user");
       if (isLoggedIn) {
-        message.success(`Your account has been created, Mr. ${firstname}`);
+        message.success(
+          `Your account has been created, Mr. ${firstname}. Redirecting ...`
+        );
         router.replace("/explore");
       } else {
         message.error(`🫢Ooops Signup Failed, Please Try Again`);
@@ -95,8 +98,8 @@ const SignUpForm = () => {
         className={`mx-auto w-full max-w-lg bg-black rounded-xl py-10 px-4 sm:p-10 `}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[60px]">
-            <img src="/favicon.ico" alt="Logo" />
+          <span className="inline-block w-full max-w-[120px]">
+            <img src="/assets/crh2-transformed.png" alt="Logo" />
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight text-white">
@@ -132,115 +135,136 @@ const SignUpForm = () => {
             </div>
           </div>
         ) : (
-          <form className=" z-20" onSubmit={handleSubmit(onSubmit)}>
-            <div className=" space-y-5">
-              <div>
-                <Input
-                  type="text"
-                  variant="bordered"
-                  size="sm"
-                  label="First Name"
-                  isClearable
-                  {...register("firstname", { required: true })}
-                />
-                {errors.firstname && (
-                  <span className=" text-red-500">
-                    First name field is required
-                  </span>
-                )}
-              </div>
-              <div>
-                <Input
-                  type="text"
-                  variant="bordered"
-                  size="sm"
-                  label="Last Name"
-                  isClearable
-                  {...register("lastname", { required: true })}
-                />
-                {errors.lastname && (
-                  <span className=" text-red-500">
-                    Last name field is required
-                  </span>
-                )}
-              </div>
-              <div>
-                <Input
-                  type="email"
-                  variant="bordered"
-                  size="sm"
-                  label="Email"
-                  isClearable
-                  {...register("email", { required: true })}
-                />
-                {errors.email && (
-                  <span className=" text-red-500">Email field is required</span>
-                )}
-              </div>
-              <div>
-                <Input
-                  value={value}
-                  label="Password"
-                  // color="default"
-                  variant="bordered"
-                  size="sm"
-                  onInvalid={isInvalid}
-                  onValueChange={setValue}
-                  color={isInvalid}
-                  errorMessage={isInvalid && "Please enter a valid password"}
-                  endContent={
-                    <button
-                      className="focus:outline-none"
-                      type="button"
-                      onClick={toggleVisibility}
-                    >
-                      {isVisible ? (
-                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                      ) : (
-                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                      )}
-                    </button>
-                  }
-                  type={isVisible ? "text" : "password"}
-                  className=""
-                  {...register("password", {
-                    required: true,
-                    pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i,
-                    minLength: 8,
-                  })}
-                />
-              </div>
-            </div>
-
-            <div className="mt-5 mb-3">
-              <Button
-                variant="primary"
-                size="lg"
-                className="w-full"
-                disabled={isLoading}
-                // onClick={onSubmit}
-              >
-                {isLoading && (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Sign Up
-              </Button>
-            </div>
-
-            <div className="text-center w-full">
-              <div className=" flex items-center mb-4">
-                <Divider className=" w-[40%]" />
-                <span className=" w-[20%]">OR</span>
-                <Divider className=" w-[40%]" />
+          <>
+            {error && <p className=" text-red-500 mb-2 z-20">{error}</p>}
+            <form className=" z-20" onSubmit={handleSubmit(onSubmit)}>
+              <div className=" space-y-5">
+                <div>
+                  <Input
+                    type="text"
+                    variant="bordered"
+                    size="sm"
+                    label="First Name"
+                    isClearable
+                    classNames={{
+                      input: ["text-white", "placeholder:text-white"],
+                      label: ["text-white"],
+                    }}
+                    {...register("firstname", { required: true })}
+                  />
+                  {errors.firstname && (
+                    <span className=" text-red-500">
+                      First name field is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <Input
+                    type="text"
+                    variant="bordered"
+                    size="sm"
+                    label="Last Name"
+                    classNames={{
+                      input: ["text-white", "placeholder:text-white/90"],
+                      label: ["text-white"],
+                    }}
+                    isClearable
+                    {...register("lastname", { required: true })}
+                  />
+                  {errors.lastname && (
+                    <span className=" text-red-500">
+                      Last name field is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <Input
+                    type="email"
+                    variant="bordered"
+                    size="sm"
+                    label="Email"
+                    classNames={{
+                      input: ["text-white", "placeholder:text-white/90"],
+                      label: ["text-white"],
+                    }}
+                    isClearable
+                    {...register("email", { required: true })}
+                  />
+                  {errors.email && (
+                    <span className=" text-red-500">
+                      Email field is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <Input
+                    value={value}
+                    label="Password"
+                    // color="default"
+                    variant="bordered"
+                    size="sm"
+                    onInvalid={isInvalid}
+                    onValueChange={setValue}
+                    color={isInvalid}
+                    classNames={{
+                      input: ["text-white", "placeholder:text-white/90"],
+                      label: ["text-white"],
+                    }}
+                    errorMessage={isInvalid && "Please enter a valid password"}
+                    endContent={
+                      <button
+                        className="focus:outline-none"
+                        type="button"
+                        onClick={toggleVisibility}
+                      >
+                        {isVisible ? (
+                          <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                        ) : (
+                          <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                        )}
+                      </button>
+                    }
+                    type={isVisible ? "text" : "password"}
+                    className=""
+                    {...register("password", {
+                      required: true,
+                      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i,
+                      minLength: 8,
+                    })}
+                  />
+                </div>
               </div>
 
-              <div className=" flex justify-center">
+              <div className="mt-5 mb-3">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  disabled={isLoading}
+                  // onClick={onSubmit}
+                >
+                  {isLoading && (
+                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Sign Up
+                </Button>
+              </div>
+
+              <div className="text-center w-full">
+                <div className=" flex items-center mb-4">
+                  <Divider className=" w-[40%]" />
+                  {/* <span className=" w-[20%]">OR</span>
+                <Divider className=" w-[40%]" /> */}
+                </div>
+
+                {/* <div className=" flex justify-center">
                 <Link href={"/"}>
                   <GoogleIcon />
                 </Link>
+              </div> */}
               </div>
-            </div>
-          </form>
+            </form>
+          </>
         )}
       </div>
     </div>

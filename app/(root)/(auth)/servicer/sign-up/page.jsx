@@ -7,8 +7,8 @@ const ServicerSignUp = () => {
     <div className="w-full h-screen flex justify-center items-center">
       <div className=" my-3 md:m-0 w-full md:w-1/2 bg-white z-20 p-10">
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[60px]">
-            <img src="/favicon.ico" alt="Logo" />
+          <span className="inline-block w-full max-w-[120px]">
+            <img src="/assets/crh1-transformed.png" alt="Logo" />
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight text-dark">
