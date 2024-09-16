@@ -159,7 +159,8 @@ const UserLayout = ({ children }) => {
             textAlign: "center",
           }}
         >
-          Ant Design ©{new Date().getFullYear()} Created by NEA
+          Ant Design ©{new Date().getFullYear()} For IT support contact :
+          0206646446
         </Footer>
       </Layout>
     </Layout>
