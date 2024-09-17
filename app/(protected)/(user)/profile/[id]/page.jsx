@@ -321,7 +321,7 @@ const ServicerProfile = ({ params }) => {
               onValueChange={setLocation}
             />
             <Textarea
-              label="Description"
+              label="Description (Please add number)"
               placeholder="Enter your description"
               variant="bordered"
               className=""

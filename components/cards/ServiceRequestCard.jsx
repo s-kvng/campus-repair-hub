@@ -10,6 +10,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import appwriteService from "@/appwrite/config";
+import { message } from "antd";
 
 export default function ServiceRequestCard({ request, setIncomingRequest }) {
   const handleClaimRequest = async () => {
@@ -20,8 +21,27 @@ export default function ServiceRequestCard({ request, setIncomingRequest }) {
       setIncomingRequest((prevRequests) =>
         prevRequests.filter((req) => req.$id !== request.$id)
       );
+      // notification
+      message.success(`Claimed Successfully... You can refresh page`);
     } catch (error) {
       console.log(error);
+      message.error(`Failed to claim request...`);
+    }
+  };
+
+  const handleRejectRequest = async () => {
+    try {
+      console.log("Rejecting..");
+      setIncomingRequest((prevRequests) =>
+        prevRequests.filter((req) => req.$id !== request.$id)
+      );
+      await appwriteService.deleteRequest(request.$id);
+
+      // notification
+      message.success(`Rejected Successfully...`);
+    } catch (error) {
+      console.log(error);
+      message.error(`Failed to reject request...`);
     }
   };
 
@@ -57,6 +77,7 @@ export default function ServiceRequestCard({ request, setIncomingRequest }) {
         <Button
           color="secondary"
           variant="flat"
+          onClick={handleRejectRequest}
           spinner={
             <svg
               className="animate-spin h-5 w-5 text-current"

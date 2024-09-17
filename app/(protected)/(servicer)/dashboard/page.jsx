@@ -17,6 +17,8 @@ import { Divider } from "@nextui-org/react";
 import appwriteService from "@/appwrite/config";
 import { useUserContext } from "@/context/AuthContext";
 import ReviewCard from "@/components/cards/ReviewCard";
+import Image from "next/image";
+import bg1 from "@/public/assets/bg-image1.jpg";
 
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
@@ -57,8 +59,15 @@ const Dashboard = () => {
         </>
       ) : (
         <>
-          <div className="bg-blue-400 px-4 py-2 h-[30vh] overflow-hidden">
-            <div className="flex justify-end">
+          <div className="  h-[30vh] overflow-hidden relative">
+            <Image
+              src={bg1}
+              alt="bg-image"
+              className=" -z-10 object-cover"
+              fill
+            />
+
+            <div className="flex justify-end z-20">
               <div className="flex items-center gap-x-3">
                 <p>
                   <Badge
@@ -68,14 +77,14 @@ const Dashboard = () => {
                     <Avatar shape="circle" size="large" src={user.avatarUrl} />
                   </Badge>
                 </p>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-white">
                   <p>{`${user.firstname} ${user.lastname}`}</p>
                   <p className="capitalize">{`${user.availability}`}</p>
                 </div>
               </div>
             </div>
             <div className="h-full flex justify-center items-center">
-              <p className="text-4xl font-semibold uppercase">
+              <p className="text-4xl font-semibold uppercase bg-white">
                 Campus Repair Hub
               </p>
             </div>
